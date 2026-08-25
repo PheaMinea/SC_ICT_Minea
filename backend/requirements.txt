@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+pymysql
+pydantic
+pydantic-settings
+email-validator
+python-jose[cryptography]
+passlib[bcrypt]
+# Passlib 1.7.4 relies on bcrypt metadata removed in newer releases.
+bcrypt==4.0.1
+python-multipart
+httpx

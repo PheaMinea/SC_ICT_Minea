@@ -1,0 +1,1242 @@
+@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* =====================================================
+  LENIS BUTTER-SMOOTH SCROLLING OPTIMIZATION
+===================================================== */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* =====================================================
+  SCROLL REVEAL ANIMATION (IMPACTFUL & ULTRA-SMOOTH)
+===================================================== */
+
+.reveal-section {
+  opacity: 0;
+  transform: translateY(40px) scale(0.95);
+  filter: blur(6px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform, filter;
+}
+
+.reveal-section.animate-reveal {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0px);
+}
+
+@keyframes revealFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+}
+
+.animate-reveal {
+  animation: revealFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* =====================================================
+  COURSE MARQUEE TICKER (SMOOTH 60FPS)
+===================================================== */
+.course-marquee {
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+}
+
+.course-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 32s linear infinite;
+  will-change: transform;
+}
+
+.course-marquee:hover .course-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+
+/* =====================================================
+  COMPONENTS
+===================================================== */
+
+@layer components {
+
+    .container-custom {
+      @apply container mx-auto px-4 sm:px-6 lg:px-8;
+    }
+
+    .section-title {
+      @apply text-2xl md:text-3xl font-bold text-blue-900 mb-3 tracking-tight;
+    }
+
+    .section-subtitle {
+      @apply text-sm md:text-base font-normal text-gray-500 leading-7 max-w-2xl mx-auto;
+    }
+
+    .btn-primary {
+      @apply bg-red-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-red-500/30;
+    }
+
+    .btn-secondary {
+      @apply border-2 border-white text-white px-6 py-3 rounded-full font-semibold hover:bg-white hover:text-blue-900 transition-all duration-300;
+    }
+
+    .card-hover {
+      @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-2;
+    }
+
+    .gradient-text {
+      @apply bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent;
+    }
+
+    .hero-gradient {
+      @apply bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900;
+    }
+  }
+
+
+/* =====================================================
+  FONTS & TYPOGRAPHY CLARITY
+===================================================== */
+
+.font-english {
+  font-family: 'Poppins', 'Dangrek', sans-serif;
+}
+
+.font-khmer {
+  font-family: 'Kantumruy Pro', sans-serif !important;
+  font-weight: 500;
+  letter-spacing: 0.015em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+html.lang-en body,
+html.lang-en body #root {
+  font-family: 'Poppins', 'Dangrek', sans-serif;
+}
+
+/* Apply Kantumruy Pro clearly to localized Khmer content */
+html.lang-km body,
+html.lang-km body #root,
+html.lang-km .font-khmer,
+html.lang-km .font-khmer * {
+  font-family: 'Kantumruy Pro', sans-serif !important;
+}
+
+/* Enhanced legibility for Khmer small text and subtext */
+html.lang-km .text-\[8px\],
+html.lang-km .text-\[9px\],
+html.lang-km .text-\[10px\],
+html.lang-km .text-\[11px\] {
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+  font-weight: 600 !important;
+}
+
+html.lang-km .text-\[12px\],
+html.lang-km .text-xs {
+  font-size: 13.5px !important;
+  line-height: 1.6 !important;
+}
+
+html.lang-km .text-\[13px\],
+html.lang-km .text-sm {
+  font-size: 14.5px !important;
+  line-height: 1.65 !important;
+}
+
+/* =====================================================
+  HERO KHMER
+===================================================== */
+
+.hero-khmer-title {
+  font-family: 'Kantumruy Pro', sans-serif !important;
+  font-weight: 700;
+  line-height: 1.8;
+}
+
+.hero-khmer-description {
+  font-family: 'Kantumruy Pro', sans-serif !important;
+  font-weight: 500;
+  line-height: 2;
+}
+
+.hero-khmer-button {
+  font-family: 'Kantumruy Pro', sans-serif !important;
+  font-weight: 600;
+}
+
+html.lang-km .font-khmer h1,
+html.lang-km .font-khmer h2,
+html.lang-km .font-khmer h3,
+html.lang-km .font-khmer h4,
+html.lang-km .font-khmer h5,
+html.lang-km .font-khmer h6,
+html.lang-km .font-khmer strong,
+html.lang-km .font-khmer b,
+html.lang-km .font-khmer .font-bold,
+html.lang-km .font-khmer .font-semibold {
+  font-weight: 700;
+}
+
+html.lang-km .font-khmer p,
+html.lang-km .font-khmer label,
+html.lang-km .font-khmer input,
+html.lang-km .font-khmer textarea,
+html.lang-km .font-khmer select,
+html.lang-km .font-khmer option {
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+
+/* =====================================================
+  BODY & THEME TRANSITIONS
+===================================================== */
+
+html {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.65;
+  color: #334155;
+  background-color: #ffffff;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  
+  font-family:
+    'Poppins',
+    sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    'Roboto',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =====================================================
+  DARK MODE GLOBAL STYLES
+===================================================== */
+html.dark,
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #070D1F;
+  color: #e2e8f0;
+}
+
+html.dark #root {
+  background-color: transparent;
+}
+
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6 {
+  color: #f8fafc;
+}
+
+html.dark p {
+  color: #cbd5e1;
+}
+
+html.dark .bg-white {
+  background-color: #0d1838;
+}
+
+html.dark .bg-\[\#F8FAFC\] {
+  background-color: #09122a;
+}
+
+html.dark .bg-\[\#EEF2F7\],
+html.dark .bg-\[\#E8EEF5\] {
+  background-color: #060b1b;
+}
+
+html.dark .border-gray-200,
+html.dark .border-slate-200,
+html.dark .border-\[\#143DAA\]\/10,
+html.dark .border-\[\#1746A2\]\/10,
+html.dark .border-\[\#1746A2\]\/15,
+html.dark .border-\[\#143DAA\]\/20 {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+html.dark .text-\[\#1F2937\],
+html.dark .text-\[\#171717\],
+html.dark .text-\[\#1e293b\],
+html.dark .text-\[\#2d3748\],
+html.dark .text-\[\#334155\] {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-\[\#102A71\],
+html.dark .text-\[\#143DAA\],
+html.dark .text-\[\#1746A2\] {
+  color: #60a5fa !important;
+}
+
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: #0b1533 !important;
+  color: #f8fafc !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+
+/* =====================================================
+  TYPOGRAPHY HIERARCHY
+  Important content is strong; supporting copy stays quiet.
+===================================================== */
+
+#root main h1,
+#root main h2,
+#root main h3,
+#root main h4,
+#root main h5,
+#root main h6 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+#root main h1 {
+  font-size: clamp(1.875rem, 4vw, 3rem);
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+#root main h2 {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1.3;
+}
+
+#root main h3 {
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  line-height: 1.4;
+}
+
+#root main h4,
+#root main h5,
+#root main h6 {
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  line-height: 1.45;
+  font-weight: 700;
+}
+
+html.lang-km #root main h1 {
+  font-size: clamp(1.75rem, 3.6vw, 2.75rem);
+  line-height: 1.45;
+}
+
+html.lang-km #root main h2 {
+  font-size: clamp(1.375rem, 2.7vw, 2rem);
+  line-height: 1.5;
+}
+
+#root main p,
+#root main li {
+  font-size: 0.875rem;
+  line-height: 1.75;
+  font-weight: 400;
+  opacity: 0.78;
+}
+
+#root main strong,
+#root main b,
+#root main label,
+#root main dt {
+  font-weight: 700;
+  opacity: 1;
+}
+
+#root main small,
+#root main .supporting-text,
+#root main .text-muted {
+  font-size: 0.75rem;
+  line-height: 1.65;
+  color: #94a3b8;
+}
+
+@media (min-width: 768px) {
+  #root main p,
+  #root main li {
+    font-size: 0.9375rem;
+  }
+}
+
+
+/* =====================================================
+  READABILITY
+===================================================== */
+
+[class*="text-[7px]"] {
+  font-size: 10px !important;
+}
+
+[class*="text-[8px]"] {
+  font-size: 11px !important;
+}
+
+[class*="text-[9px]"] {
+  font-size: 12px !important;
+}
+
+[class*="text-[10px]"] {
+  font-size: 13px !important;
+}
+
+[class*="text-[11px]"] {
+  font-size: 14px !important;
+}
+
+[class*="text-[12px]"] {
+  font-size: 15px !important;
+}
+
+[class*="text-[13px]"] {
+  font-size: 15px !important;
+}
+
+[class*="text-[14px]"] {
+  font-size: 16px !important;
+}
+
+[class*="text-[15px]"] {
+  font-size: 17px !important;
+}
+
+.home-compact-card [class*="text-[7px]"] {
+  font-size: 9px !important;
+}
+
+.home-compact-card [class*="text-[8px]"] {
+  font-size: 9px !important;
+}
+
+.home-compact-card [class*="text-[9px]"] {
+  font-size: 10px !important;
+}
+
+.home-compact-card [class*="text-[10px]"] {
+  font-size: 11px !important;
+}
+
+.home-compact-card [class*="text-[11px]"] {
+  font-size: 12px !important;
+}
+
+.home-compact-card [class*="text-[12px]"] {
+  font-size: 13px !important;
+}
+
+.home-compact-card [class*="text-[13px]"] {
+  font-size: 14px !important;
+}
+
+.site-navbar [class*="text-[8px]"] {
+  font-size: 9px !important;
+}
+
+.site-navbar [class*="text-[9px]"] {
+  font-size: 10px !important;
+}
+
+.site-navbar [class*="text-[10px]"] {
+  font-size: 11px !important;
+}
+
+.site-navbar [class*="text-[11px]"] {
+  font-size: 12px !important;
+}
+
+.site-navbar [class*="text-[13px]"] {
+  font-size: 13px !important;
+}
+
+.navbar-brand [class*="text-[18px]"] {
+  font-size: 18px !important;
+}
+
+@media (min-width: 640px) {
+  .navbar-brand [class*="sm:text-[20px]"] {
+    font-size: 20px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .navbar-brand [class*="lg:text-[22px]"] {
+    font-size: 22px !important;
+  }
+}
+
+/* =====================================================
+  NAVBAR: HIDE DEFAULT BROWSER OUTLINE
+  (navbar uses its own custom focus/hover styling)
+===================================================== */
+.site-navbar button:focus,
+.site-navbar a:focus,
+.site-navbar button:focus-visible,
+.site-navbar a:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+
+
+/* =====================================================
+  CODE
+===================================================== */
+
+code {
+  font-family:
+    source-code-pro,
+    Menlo,
+    Monaco,
+    Consolas,
+    'Courier New',
+    monospace;
+}
+
+
+/* =====================================================
+  SMOOTH SCROLL
+===================================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+/* =====================================================
+   COURSE SCROLLING BAR
+===================================================== */
+
+.course-marquee {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  white-space: nowrap;
+  mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+}
+
+.course-marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: max-content;
+  animation: marqueeScroll 30s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.course-marquee:hover .course-marquee-track {
+  animation-play-state: paused;
+}
+
+
+/* Base Item */
+.course-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 20px;
+  justify-content: center;
+  min-height: auto;
+  border-radius: 0 !important;
+  border: none !important;
+  color: #334155;
+  background: transparent !important;
+  box-shadow: none !important;
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  transition: transform 0.3s ease;
+}
+
+.course-office { color: #1d4ed8; }
+.course-design { color: #7e22ce; }
+.course-video { color: #be123c; }
+.course-programming { color: #047857; }
+.course-web { color: #0e7490; }
+.course-network { color: #b45309; }
+
+
+/* Icon */
+.course-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  line-height: 1;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+
+/* ==============================
+   WORD
+============================== */
+
+.course-word {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.08);
+  border-color: rgba(37, 99, 235, 0.12);
+}
+
+
+/* ==============================
+   EXCEL
+============================== */
+
+.course-excel {
+  color: #15803d;
+  background: rgba(22, 163, 74, 0.08);
+  border-color: rgba(22, 163, 74, 0.12);
+}
+
+
+/* ==============================
+   POWERPOINT
+============================== */
+
+.course-powerpoint {
+  color: #ea580c;
+  background: rgba(234, 88, 12, 0.08);
+  border-color: rgba(234, 88, 12, 0.12);
+}
+
+
+/* ==============================
+   COMPUTER
+============================== */
+
+.course-computer {
+  color: #143daa;
+  background: rgba(20, 61, 170, 0.07);
+  border-color: rgba(20, 61, 170, 0.12);
+}
+
+
+/* ==============================
+   GRAPHIC DESIGN
+============================== */
+
+.course-design {
+  color: #9333ea;
+  background: rgba(147, 51, 234, 0.07);
+  border-color: rgba(147, 51, 234, 0.12);
+}
+
+
+/* ==============================
+   ADVANCE EXCEL
+============================== */
+
+.course-advance {
+  color: #047857;
+  background: rgba(4, 120, 87, 0.07);
+  border-color: rgba(4, 120, 87, 0.12);
+}
+
+/* Keep every marquee label as icon + text without a visual container. */
+.course-office,
+.course-design,
+.course-video,
+.course-programming,
+.course-web,
+.course-network,
+.course-word,
+.course-excel,
+.course-powerpoint,
+.course-computer,
+.course-advance {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+
+/* Hover */
+.course-item:hover {
+  transform: translateY(-2px);
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+
+/* ==============================
+   AUTO SCROLL
+============================== */
+
+@keyframes courseScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - 6px));
+  }
+}
+
+
+/* ==============================
+   MOBILE
+============================== */
+
+@media (max-width: 768px) {
+  .course-marquee {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .course-marquee-track {
+    gap: 8px;
+    animation-duration: 18s;
+  }
+  .course-item {
+    flex-basis: auto;
+    padding: 4px 14px;
+    font-size: 11px;
+  }
+  .course-icon {
+    font-size: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .course-marquee-track { animation: none; }
+}
+
+
+/* =====================================================
+   HERO SECTION ANIMATIONS
+===================================================== */
+
+/* Hero Container 3D Perspective */
+.hero-container {
+  perspective: 1000px;
+}
+
+/* Hero Text Slide Up Animation */
+.hero-text-slide-up {
+  animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+  opacity: 0;
+}
+
+@keyframes slideUpFade {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Hero Buttons Stagger Animation */
+.hero-buttons {
+  animation: fadeInStagger 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+  opacity: 0;
+}
+
+.hero-buttons > *:nth-child(1) {
+  animation-delay: 0.8s;
+}
+.hero-buttons > *:nth-child(2) {
+  animation-delay: 1s;
+}
+
+@keyframes fadeInStagger {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slow Zoom Effect on Active Banner */
+.hero-image-zoom {
+  animation: slowZoom 25s ease-in-out infinite alternate;
+}
+
+@keyframes slowZoom {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+/* Slide Indicator Pulse Animation */
+.slide-indicator {
+  animation: indicatorPulse 2s ease-in-out infinite;
+}
+
+@keyframes indicatorPulse {
+  0%, 100% { 
+    transform: scale(1); 
+  }
+  50% { 
+    transform: scale(1.2); 
+  }
+}
+
+/* Banner Transition */
+.banner-transition {
+  transition: 
+    opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hero Button Hover Effects */
+.hero-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hero-btn:hover::after {
+  opacity: 1;
+}
+
+/* Hero Navigation Buttons */
+.hero-nav-btn {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-nav-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 30px rgba(239, 35, 60, 0.3);
+}
+
+/* =====================================================
+   RESPONSIVE HERO ANIMATIONS
+===================================================== */
+
+@media (max-width: 640px) {
+  .hero-text-slide-up h1 {
+    font-size: 1.3rem;
+  }
+  
+  .hero-text-slide-up p {
+    font-size: 0.75rem;
+  }
+  
+  .hero-buttons a {
+    font-size: 0.7rem;
+    padding: 0.4rem 1rem;
+  }
+  
+  .hero-image-zoom {
+    animation-duration: 20s;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .hero-text-slide-up h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-text-slide-up p {
+    font-size: 0.95rem;
+  }
+}
+
+/* =====================================================
+   ADDITIONAL UTILITY ANIMATIONS
+===================================================== */
+
+/* Fade In */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Slide In Left */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.8s ease-out forwards;
+}
+
+/* Slide In Right */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.8s ease-out forwards;
+}
+
+/* Scale In */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s ease-out forwards;
+}
+
+/* =====================================================
+   GALLERY & CARD HOVER ENHANCEMENTS
+===================================================== */
+
+/* Gallery Card Zoom on Hover */
+.gallery-card {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-card:hover {
+  transform: scale(1.03);
+}
+
+.gallery-card img {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-card:hover img {
+  transform: scale(1.08);
+}
+
+/* Card Glow Effect */
+.card-glow {
+  transition: box-shadow 0.4s ease;
+}
+
+.card-glow:hover {
+  box-shadow: 0 20px 60px rgba(20, 61, 170, 0.15);
+}
+
+/* =====================================================
+   STATS COUNTER ANIMATION
+===================================================== */
+
+.stat-number {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.stat-number:hover {
+  transform: scale(1.05);
+}
+
+/* =====================================================
+   SCROLLBAR STYLING
+===================================================== */
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom scrollbar for visible scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(20, 61, 170, 0.05);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(20, 61, 170, 0.2);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(20, 61, 170, 0.4);
+}
+
+/* =====================================================
+   SELECTION STYLING
+===================================================== */
+
+::selection {
+  background: rgba(20, 61, 170, 0.2);
+  color: #143DAA;
+}
+
+::-moz-selection {
+  background: rgba(20, 61, 170, 0.2);
+  color: #143DAA;
+}
+
+
+
+
+/* =====================================================
+   BIDIRECTIONAL SCROLL REVEAL (SMOOTH UP & DOWN)
+===================================================== */
+
+.element-reveal {
+  overflow: hidden;
+}
+
+/* Initial / Reset state (when outside viewport) */
+.element-reveal .reveal-heading > *,
+.element-reveal .reveal-badge,
+.element-reveal .reveal-title,
+.element-reveal .reveal-text,
+.element-reveal .reveal-card,
+.element-reveal .reveal-list-item,
+.element-reveal .reveal-stat,
+.element-reveal .reveal-visual,
+.element-reveal .reveal-gallery-item,
+.element-reveal .alumni-copy > *,
+.cta-reveal-section .cta-copy > * {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* In-viewport state (when scrolling down OR scrolling up into section) */
+.element-reveal.animate-reveal .reveal-heading > *,
+.element-reveal.animate-reveal .reveal-badge,
+.element-reveal.animate-reveal .reveal-title,
+.element-reveal.animate-reveal .reveal-text,
+.element-reveal.animate-reveal .reveal-card,
+.element-reveal.animate-reveal .reveal-list-item,
+.element-reveal.animate-reveal .reveal-stat,
+.element-reveal.animate-reveal .reveal-visual,
+.element-reveal.animate-reveal .reveal-gallery-item,
+.element-reveal.animate-reveal .alumni-copy > *,
+.cta-reveal-section.animate-reveal .cta-copy > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =====================================================
+   GLOBAL DARK MODE COMPATIBILITY & TEXT CLARITY
+===================================================== */
+
+html.dark {
+  color-scheme: dark;
+  background-color: #030712 !important;
+}
+
+html.dark body,
+html.dark #root {
+  background-color: #030712 !important;
+  color: #F8FAFC !important;
+}
+
+/* Page canvas backgrounds in dark mode */
+html.dark main,
+html.dark .bg-\[\#F8FAFC\],
+html.dark .bg-slate-50,
+html.dark .bg-slate-100,
+html.dark .bg-gray-50,
+html.dark .bg-gray-100 {
+  background-color: #080E1E !important;
+}
+
+/* Card surfaces in dark mode */
+html.dark .bg-white {
+  background-color: #0F172A !important;
+  border-color: #1E293B !important;
+}
+
+html.dark .bg-slate-50\/70,
+html.dark .bg-slate-100\/70,
+html.dark .bg-\[\#F5F7FB\] {
+  background-color: #111C38 !important;
+}
+
+/* Border lines in dark mode */
+html.dark .border-slate-100,
+html.dark .border-slate-200,
+html.dark .border-gray-100,
+html.dark .border-gray-200,
+html.dark .border-\[\#143DAA\]\/10,
+html.dark .border-\[\#143DAA\]\/20,
+html.dark .border-\[\#1746A2\]\/10,
+html.dark .border-\[\#1746A2\]\/15 {
+  border-color: #1E293B !important;
+}
+
+/* Heading & primary text readability in dark mode */
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6,
+html.dark .text-slate-900,
+html.dark .text-slate-800,
+html.dark .text-slate-700,
+html.dark .text-gray-900,
+html.dark .text-gray-800,
+html.dark .text-gray-700,
+html.dark .text-blue-900,
+html.dark .text-\[\#143DAA\],
+html.dark .text-\[\#102A71\],
+html.dark .text-\[\#1F2937\],
+html.dark .text-\[\#171717\],
+html.dark .text-\[\#111827\],
+html.dark .text-\[\#2d3748\],
+html.dark .text-\[\#1e293b\] {
+  color: #F8FAFC !important;
+}
+
+/* Body & secondary text readability in dark mode */
+html.dark p,
+html.dark .text-slate-600,
+html.dark .text-slate-500,
+html.dark .text-gray-600,
+html.dark .text-gray-500,
+html.dark .text-\[\#334155\] {
+  color: #94A3B8 !important;
+}
+
+html.dark .text-slate-400,
+html.dark .text-gray-400 {
+  color: #64748B !important;
+}
+
+/* Inputs, textareas, and search boxes in dark mode */
+html.dark input,
+html.dark textarea,
+html.dark select {
+  background-color: #0F172A !important;
+  color: #F8FAFC !important;
+  border-color: #334155 !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748B !important;
+}
+
+html.dark input:focus,
+html.dark textarea:focus {
+  background-color: #1E293B !important;
+  border-color: #2563EB !important;
+}
+
+/* Form container cards in dark mode */
+html.dark form,
+html.dark .card-lift {
+  border-color: #1E293B !important;
+}
+
+/* Mobile navbar menu and dropdowns in dark mode */
+html.dark .mobile-navbar,
+html.dark header.site-navbar {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+html.dark .bg-white\/95,
+html.dark .bg-white\/80 {
+  background-color: rgba(7, 13, 31, 0.95) !important;
+}
+

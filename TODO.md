@@ -1,0 +1,5 @@
+- [x] Read frontend_user routing and navbar files
+- [x] Create Courses page in frontend_user
+- [x] Add /courses route in App.js
+- [x] Add Courses nav link and Facebook icon in Navbar
+- [ ] Run frontend_user build to verify
