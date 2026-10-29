@@ -11,28 +11,11 @@ from fastapi import (
 import shutil
 import uuid
 
+from .upload_paths import UPLOAD_DIR
 
 # ==========================================
 # BASE DIRECTORY
 # ==========================================
-
-BASE_DIR = Path(
-    __file__
-).resolve().parents[2]
-
-
-# ==========================================
-# UPLOAD DIRECTORY
-# ==========================================
-
-UPLOAD_DIR = (
-    BASE_DIR / "uploads"
-)
-
-UPLOAD_DIR.mkdir(
-    parents=True,
-    exist_ok=True
-)
 
 
 # ==========================================

@@ -19,6 +19,7 @@ from sqlalchemy.orm import Session
 from .. import crud, schemas
 from ..db.database import get_db
 from ..core.dependencies import get_current_active_admin
+from ..utils.upload_paths import UPLOAD_DIR
 
 
 router = APIRouter()
@@ -28,16 +29,8 @@ router = APIRouter()
 # UPLOAD CONFIGURATION
 # =========================================================
 
-UPLOAD_DIRECTORY = (
-    Path(__file__).resolve().parents[2]
-    / "uploads"
-    / "charity"
-)
-
-UPLOAD_DIRECTORY.mkdir(
-    parents=True,
-    exist_ok=True,
-)
+UPLOAD_DIRECTORY = UPLOAD_DIR / "charity"
+UPLOAD_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
 ALLOWED_IMAGE_EXTENSIONS = {
     ".jpg",

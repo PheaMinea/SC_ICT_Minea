@@ -1,6 +1,5 @@
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
-from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,6 +18,7 @@ from .db.database import Base, engine
 from . import models  # noqa: F401
 
 from .core.rate_limiter import limiter
+from .utils.upload_paths import UPLOAD_DIR
 
 from .routers import (
     auth,
@@ -176,21 +176,6 @@ app.state.limiter = limiter
 app.add_exception_handler(
     RateLimitExceeded,
     _rate_limit_exceeded_handler,
-)
-
-
-# ============================================================
-# UPLOAD DIRECTORY
-# ============================================================
-
-UPLOAD_DIR = (
-    Path(__file__).resolve().parents[1]
-    / "uploads"
-)
-
-UPLOAD_DIR.mkdir(
-    parents=True,
-    exist_ok=True,
 )
 
 
