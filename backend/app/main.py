@@ -1,3 +1,4 @@
+import os
 from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
 
@@ -92,16 +93,15 @@ def cleanup_expired_revoked_tokens() -> int:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Create missing tables after the application starts, not while Vercel imports it.
-    # Existing schemas still require migrations for structural changes.
-    Base.metadata.create_all(bind=engine)
+    if os.getenv("VERCEL") != "1":
+        Base.metadata.create_all(bind=engine)
 
-    # ---------------------------------------------------
-    # STARTUP: clean up expired revoked tokens
-    # ---------------------------------------------------
-    deleted = cleanup_expired_revoked_tokens()
-    if deleted:
-        print(f"[Startup] Cleaned {deleted} expired revoked token(s).")
+        # ---------------------------------------------------
+        # STARTUP: clean up expired revoked tokens
+        # ---------------------------------------------------
+        deleted = cleanup_expired_revoked_tokens()
+        if deleted:
+            print(f"[Startup] Cleaned {deleted} expired revoked token(s).")
 
     yield
 
