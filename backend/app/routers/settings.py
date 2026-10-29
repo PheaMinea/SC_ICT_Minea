@@ -3,7 +3,9 @@ from datetime import datetime, timezone
 from fastapi import (
     APIRouter,
     Depends,
+    File,
     HTTPException,
+    UploadFile,
     status,
 )
 
@@ -11,6 +13,7 @@ from sqlalchemy.orm import Session
 
 from .. import crud, schemas
 from ..db.database import get_db
+from ..utils.file_utils import save_upload_file
 
 from ..core.dependencies import (
     get_current_active_admin,
@@ -21,8 +24,29 @@ router = APIRouter()
 
 
 # =========================================================
+# UPLOAD SETTINGS IMAGE (LOGO / FAVICON)
+# POST /api/settings/upload
+# =========================================================
+
+@router.post(
+    "/upload",
+    status_code=status.HTTP_201_CREATED,
+)
+def upload_settings_image(
+    file: UploadFile = File(...),
+    current_admin=Depends(get_current_active_admin),
+):
+    image_path = save_upload_file(
+        file,
+        subdir="settings",
+    )
+    return {"image_url": image_path}
+
+
+# =========================================================
 # GET SITE SETTINGS - PUBLIC
 # GET /api/settings/
+# =========================================================
 # =========================================================
 
 @router.get(

@@ -3,7 +3,7 @@ import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
 import {
-  FiBookOpen,
+  
   FiTarget,
   FiEye,
   FiAward,
@@ -13,11 +13,10 @@ import {
   FiCheckCircle,
   FiMail,
   FiPhone,
-  FiArrowRight,
-} from "react-icons/fi";
+  FiArrowRight } from "react-icons/fi";
 
 import api from "../../services/api";
-import Loader from "../common/Loader";
+import TypewriterText from "../common/TypewriterText";
 import { useLanguage } from "../../context/LanguageContext";
 import heroVideo from "./video/sc-academy.mp4";
 
@@ -181,8 +180,7 @@ const About = () => {
         "about.excellenceDescription",
         "We strive for excellence in teaching, learning, leadership, and everything we do.",
         "យើងខិតខំសម្រេចបាននូវឧត្តមភាពក្នុងការបង្រៀន ការសិក្សា ភាពជាអ្នកដឹកនាំ និងគ្រប់សកម្មភាពរបស់យើង។"
-      ),
-    },
+      ) },
     {
       icon: FiHeart,
       title: tr("about.integrity", "Integrity", "សុចរិតភាព"),
@@ -190,8 +188,7 @@ const About = () => {
         "about.integrityDescription",
         "We promote honesty, responsibility, respect, and strong moral values.",
         "យើងលើកកម្ពស់ភាពស្មោះត្រង់ ការទទួលខុសត្រូវ ការគោរព និងគុណតម្លៃសីលធម៌ល្អ។"
-      ),
-    },
+      ) },
     {
       icon: FiUsers,
       title: tr("about.community", "Community", "សហគមន៍"),
@@ -199,8 +196,7 @@ const About = () => {
         "about.communityDescription",
         "We build a supportive learning community where students, teachers, and families grow together.",
         "យើងកសាងសហគមន៍សិក្សាដែលគាំទ្រគ្នា ដែលសិស្ស គ្រូបង្រៀន និងគ្រួសារ អាចរីកចម្រើនជាមួយគ្នា។"
-      ),
-    },
+      ) },
     {
       icon: FiStar,
       title: tr("about.innovation", "Innovation", "នវានុវត្តន៍"),
@@ -208,8 +204,7 @@ const About = () => {
         "about.innovationDescription",
         "We embrace new ideas, technology, and modern learning methods to improve education.",
         "យើងទទួលយកគំនិតថ្មី បច្ចេកវិទ្យា និងវិធីសាស្ត្រសិក្សាទំនើប ដើម្បីធ្វើឱ្យការអប់រំកាន់តែប្រសើរ។"
-      ),
-    },
+      ) },
   ];
 
   const features = [
@@ -262,13 +257,39 @@ const About = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-black/30" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 w-full animate-text-focus">
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-600/30 border border-blue-400/40 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4 backdrop-blur-md shadow-sm">
-              🏛️ {tr("about.welcome", "About SC Academy", "អំពីយើង")}
+              {tr("about.welcome", "About SC Academy", "អំពីយើង")}
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4 drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]">
-              {tr("about.title", "About SC Academy", "អំពី SC Academy")}
+              {isKhmer ? (
+                <>
+                  អំពីយើង &{" "}
+                  <TypewriterText
+                    words={[
+                      "បេសកកម្មអប់រំ SC Academy",
+                      "ចក្ខុវិស័យបណ្តុះបណ្តាល",
+                      "គុណតម្លៃ និងក្រមសីលធម៌",
+                      "ការកសាងអ្នកដឹកនាំជំនាន់ថ្មី",
+                    ]}
+                    highlightClassName="animated-gradient-text"
+                  />
+                </>
+              ) : (
+                <>
+                  About SC Academy &{" "}
+                  <TypewriterText
+                    words={[
+                      "Our Educational Mission",
+                      "Future-Ready Vision",
+                      "Core Values & Integrity",
+                      "Empowering New Leaders",
+                    ]}
+                    highlightClassName="animated-gradient-text"
+                  />
+                </>
+              )}
             </h1>
             <p className="text-sm sm:text-base text-slate-100 leading-relaxed max-w-2xl font-medium drop-shadow-[0_1px_8px_rgba(0,0,0,0.85)]">
               {tr(
@@ -282,23 +303,31 @@ const About = () => {
       </section>
 
       {/* ====================================================
-          OUR STORY
+          PAGE BODY WITH DOT MATRIX PATTERN
       ===================================================== */}
-      <section className="bg-white py-12 md:py-16">
+      <div className="relative w-full bg-dot-matrix-page overflow-hidden">
+        {/* ====================================================
+            OUR STORY
+        ===================================================== */}
+        <section className="py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-center">
             {/* IMAGE */}
             <div className="relative">
               <div className="relative h-[320px] sm:h-[380px] lg:h-[420px] rounded-2xl overflow-hidden shadow-md border border-slate-200">
                 <img
-                  src={
-                    getImageUrl(about?.story_image || about?.image) ||
-                    "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1000&q=85"
-                  }
+                  src={getImageUrl(
+                    about?.story_image || about?.image,
+                    "/sc-academy-building.png"
+                  )}
                   alt="SC Academy"
                   loading="lazy"
                   decoding="async"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-center"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "/sc-academy-building.png";
+                  }}
                 />
               </div>
 
@@ -316,10 +345,10 @@ const About = () => {
             {/* CONTENT */}
             <div>
               <span className="text-xs uppercase tracking-widest font-bold text-[#2563EB]">
-                {tr("about.whoWeAre", "WHO WE ARE", "យើងជានរណា")}
+                {tr("about.whoWeAre", "WHO WE ARE", "SC ACADEMY")}
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1.5 mb-4">
-                {tr("about.ourStory", "Our Story & Vision", "រឿងរ៉ាវរបស់យើង")}
+                {tr("about.ourStory", "Our Story & Vision", "អំពីយើង")}
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed whitespace-pre-line mb-6">
                 {storyText}
@@ -342,7 +371,7 @@ const About = () => {
       {/* ====================================================
           MISSION & VISION
       ===================================================== */}
-      <section className="bg-[#F8FAFC] py-12 md:py-16 border-t border-slate-200">
+      <section className="bg-transparent py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10 md:mb-12">
             <span className="text-[#2563EB] text-xs font-bold uppercase tracking-widest">
@@ -386,7 +415,7 @@ const About = () => {
       {/* ====================================================
           CORE VALUES
       ===================================================== */}
-      <section className="bg-white py-12 md:py-16 border-t border-slate-200">
+      <section className="bg-transparent py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10 md:mb-12">
             <span className="text-[#2563EB] text-xs font-bold uppercase tracking-widest">
@@ -417,7 +446,7 @@ const About = () => {
       {/* ====================================================
           PRINCIPAL MESSAGE
       ===================================================== */}
-      <section className="bg-[#F8FAFC] py-14 md:py-20 border-t border-slate-200">
+      <section className="bg-transparent py-14 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-slate-950 text-white rounded-3xl border border-slate-800 p-8 sm:p-12 lg:p-14 shadow-xl">
             <div className="grid grid-cols-1 lg:grid-cols-[300px_1fr] gap-8 lg:gap-12 items-center">
@@ -465,7 +494,7 @@ const About = () => {
       {/* ====================================================
           LEADERSHIP TEAM
       ===================================================== */}
-      <section className="bg-white py-12 md:py-16 border-t border-slate-200">
+      <section className="bg-transparent py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10 md:mb-12">
             <span className="text-[#2563EB] text-xs font-bold uppercase tracking-widest">
@@ -544,7 +573,7 @@ const About = () => {
       {/* ====================================================
           BOTTOM CTA
       ===================================================== */}
-      <section className="bg-[#F8FAFC] py-14 md:py-20 border-t border-slate-200">
+      <section className="bg-transparent py-14 md:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-slate-950 rounded-3xl border border-slate-800 p-8 md:p-14 text-center text-white shadow-xl">
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[#2563EB] text-xs font-bold uppercase tracking-wider">
@@ -578,6 +607,7 @@ const About = () => {
           </div>
         </div>
       </section>
+      </div>
     </main>
   );
 };

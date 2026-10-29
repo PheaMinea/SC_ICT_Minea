@@ -39,6 +39,8 @@ class AdminBase(BaseModel):
     )
 
     email: EmailStr
+    full_name: Optional[str] = None
+    avatar_url: Optional[str] = None
     role: str = Field(
         default="editor",
         description="Role: super_admin or editor",
@@ -61,6 +63,8 @@ class AdminUpdate(BaseModel):
     )
 
     email: Optional[EmailStr] = None
+    full_name: Optional[str] = None
+    avatar_url: Optional[str] = None
 
     password: Optional[str] = Field(
         default=None,
@@ -71,6 +75,27 @@ class AdminUpdate(BaseModel):
     role: Optional[str] = None
 
     is_active: Optional[bool] = None
+
+
+class AdminProfileUpdate(BaseModel):
+    username: Optional[str] = Field(
+        default=None,
+        min_length=3,
+        max_length=50,
+    )
+    email: Optional[EmailStr] = None
+    full_name: Optional[str] = None
+    avatar_url: Optional[str] = None
+
+
+class AdminChangePassword(BaseModel):
+    current_password: str
+    new_password: str = Field(
+        ...,
+        min_length=8,
+        max_length=72,
+    )
+    confirm_password: str
 
 
 class AdminLogin(BaseModel):
@@ -1399,7 +1424,7 @@ class CharityContentUpdate(BaseModel):
 class CharityContent(CharityContentBase):
     id: int
 
-    created_at: datetime
+    created_at: Optional[datetime] = None
     updated_at: datetime
 
     model_config = {
@@ -1666,4 +1691,4 @@ class SiteSettings(SiteSettingsBase):
 
     model_config = {
         "from_attributes": True
-    }
+    }

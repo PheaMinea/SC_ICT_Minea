@@ -62,14 +62,12 @@ module.exports = {
 
       fontFamily: {
         sans: [
-          "Poppins",
-          "Nokora",
-          "Noto Serif Khmer",
-          "Taprom",
+          "Inter",
+          "Kantumruy Pro",
           "sans-serif",
         ],
 
-        english: ["Poppins", "sans-serif"],
+        english: ["Inter", "sans-serif"],
 
         khmer: [
           "Kantumruy Pro",
@@ -166,5 +164,5 @@ module.exports = {
     },
   },
 
-  plugins: [require("@tailwindcss/line-clamp")],
+  plugins: [],
 };

@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
-
 import {
   FiX,
   FiChevronLeft,
   FiChevronRight,
   FiImage,
-  FiArrowRight,
 } from "react-icons/fi";
 
 import api from "../../services/api";
-import Loader from "../common/Loader";
+import TypewriterText from "../common/TypewriterText";
+import EmptyState from "../common/EmptyState";
 import { useLanguage } from "../../context/LanguageContext";
 import heroVideo from "./video/sc-academy.mp4";
 
@@ -254,13 +252,39 @@ const Gallery = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-black/30" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 w-full animate-text-focus">
           <div className="max-w-3xl">
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-600/30 border border-blue-400/40 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4 backdrop-blur-md shadow-sm">
-              📸 {tr("gallery.heroLabel", "Photo Gallery", "វិចិត្រសាលរូបភាព")}
-            </span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 dark:bg-blue-500/20 text-[#2563EB] dark:text-blue-400 text-xs font-bold uppercase tracking-widest mb-4">
+              {tr("gallery.heroLabel", "Photo Gallery", "វិចិត្រសាលរូបភាព")}
+            </div>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4 drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]">
-              {tr("gallery.heroTitle", "Life & Moments at SC Academy", "ជីវិតនៅ SC Academy")}
+              {isKhmer ? (
+                <>
+                  ទិដ្ឋភាព & អនុស្សាវរីយ៍{" "}
+                  <TypewriterText
+                    words={[
+                      "នៅ SC Academy",
+                      "សកម្មភាពសិក្សាក្នុង Lab",
+                      "សិក្ខាសាលាបច្ចេកវិទ្យា",
+                      "ពិធីទទួលវិញ្ញាបនបត្រ",
+                    ]}
+                    highlightClassName="animated-gradient-text"
+                  />
+                </>
+              ) : (
+                <>
+                  Life & Moments at{" "}
+                  <TypewriterText
+                    words={[
+                      "SC Academy",
+                      "Hands-on Lab Days",
+                      "Tech Workshops",
+                      "Graduation Celebrations",
+                    ]}
+                    highlightClassName="animated-gradient-text"
+                  />
+                </>
+              )}
             </h1>
             <p className="text-sm sm:text-base text-slate-100 leading-relaxed max-w-2xl font-medium drop-shadow-[0_1px_8px_rgba(0,0,0,0.85)]">
               {tr(
@@ -276,7 +300,7 @@ const Gallery = () => {
       {/* =================================================
           GALLERY SECTION
       ================================================= */}
-      <section className="bg-[#F8FAFC] py-12 md:py-16">
+      <section className="bg-dot-matrix-page py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* CATEGORY FILTER */}
@@ -303,17 +327,14 @@ const Gallery = () => {
           )}
 
           {filteredImages.length === 0 ? (
-            <div className="max-w-md mx-auto bg-white border border-slate-200 rounded-2xl py-12 px-6 text-center shadow-sm">
-              <div className="w-12 h-12 mx-auto mb-3 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400">
-                <FiImage size={24} />
-              </div>
-              <h3 className="text-base font-bold text-slate-900">
-                {tr("gallery.noImagesFound", "No Images Found", "រកមិនឃើញរូបភាព")}
-              </h3>
-              <p className="text-xs text-slate-500 mt-1">
-                {tr("gallery.noImagesDescription", "No gallery images are available in this category.", "មិនមានរូបភាពក្នុងវិចិត្រសាលសម្រាប់ប្រភេទនេះទេ។")}
-              </p>
-            </div>
+            <EmptyState
+              icon={FiImage}
+              title_km="មិនទាន់មានរូបភាពក្នុងវិចិត្រសាលនៅឡើយទេ"
+              title_en="No Gallery Images Found"
+              description_km={activeCategory !== "All" ? "មិនមានរូបភាពសម្រាប់ប្រភេទដែលអ្នកបានជ្រើសរើសឡើយ។" : "រូបភាពសកម្មភាពសាលានឹងបង្ហាញនៅទីនេះបន្ទាប់ពីត្រូវបានបញ្ចូល។"}
+              description_en={activeCategory !== "All" ? "No gallery images available for this selected category." : "Campus activity images will appear here once added."}
+              onReset={activeCategory !== "All" ? () => handleCategoryChange("All") : null}
+            />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredImages.map((image, index) => {
@@ -328,7 +349,7 @@ const Gallery = () => {
                   <div
                     key={image.id || index}
                     onClick={() => openLightbox(image, index)}
-                    className="card-lift group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm hover:border-slate-300 cursor-pointer transition-all duration-300 flex flex-col"
+                    className={`card-lift group relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm hover:border-slate-300 cursor-pointer transition-all duration-300 flex flex-col scroll-reveal stagger-${(index % 6) + 1}`}
                   >
                     <div className="relative w-full aspect-[4/3] overflow-hidden bg-slate-100">
                       {/* Fallback */}
@@ -383,43 +404,7 @@ const Gallery = () => {
         </div>
       </section>
 
-      {/* =================================================
-          CTA
-      ================================================= */}
-      <section className="bg-white py-14 md:py-20 border-t border-slate-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-slate-950 rounded-3xl border border-slate-800 p-8 md:p-14 text-center text-white shadow-xl">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[#2563EB] text-xs font-bold uppercase tracking-wider">
-              ✨ {tr("gallery.community", "SC Academy Community", "សហគមន៍ SC Academy")}
-            </span>
-            <h2 className="mt-5 text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              {tr("gallery.createYourOwn", "Create Your Own Unforgettable Memories", "កសាងអនុស្សាវរីយ៍ដ៏មានតម្លៃរបស់អ្នក")}
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-xl mx-auto mt-3">
-              {tr(
-                "gallery.ctaDescription",
-                "Join SC Academy and become part of a vibrant learning community filled with education, friendship, activities and unforgettable experiences.",
-                "ចូលរួមជាមួយ SC Academy និងក្លាយជាផ្នែកមួយនៃសហគមន៍សិក្សាដ៏រស់រវើក ដែលពោរពេញដោយការអប់រំ មិត្តភាព សកម្មភាព និងបទពិសោធន៍ដែលមិនអាចបំភ្លេចបាន។"
-              )}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
-              <Link
-                to="/courses"
-                className="w-full sm:w-auto h-12 px-8 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl text-xs sm:text-sm font-bold inline-flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95"
-              >
-                <span>{tr("common.joinNow", "Join Programs", "ចូលរួមវគ្គសិក្សា")}</span>
-                <FiArrowRight size={14} />
-              </Link>
-              <Link
-                to="/contact"
-                className="w-full sm:w-auto h-12 px-8 bg-slate-900 border border-slate-700 hover:bg-slate-800 text-white rounded-xl text-xs sm:text-sm font-bold inline-flex items-center justify-center transition-all"
-              >
-                {tr("common.contactUs", "Contact Us", "ទាក់ទងមកយើង")}
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* =================================================
           LIGHTBOX (CLEAN MODERN OVERLAY)

@@ -12,6 +12,8 @@ import {
 import { useLanguage } from "../../context/LanguageContext";
 import api from "../../services/api";
 import { getImageUrl } from "../../utils/helpers";
+import TypewriterText from "../common/TypewriterText";
+import EmptyState from "../common/EmptyState";
 import heroVideo from "./video/sc-academy.mp4";
 
 const Charity = () => {
@@ -204,13 +206,41 @@ const Charity = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-black/30" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 w-full animate-text-focus">
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-600/30 border border-blue-400/40 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4 backdrop-blur-md shadow-sm">
-              ❤️ {tr("charity.heroLabel", "COMMUNITY & OUTREACH", "សប្បុរសធម៌ SC Academy")}
+              {tr("charity.heroLabel", "COMMUNITY & OUTREACH", "សប្បុរសធម៌ SC Academy")}
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4 drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]">
-              {heroTitle}
+              {isKhmer ? (
+                <>
+                  សកម្មភាពសប្បុរសធម៌ &{" "}
+                  <TypewriterText
+                    words={[
+                      heroTitle,
+                      "ការអប់រំសម្រាប់ទាំងអស់គ្នា",
+                      "អាហារូបករណ៍សម្រាប់សិស្ស",
+                      "ការគាំទ្រសហគមន៍កម្ពុជា",
+                      "កសាងអនាគតយុវជន",
+                    ]}
+                    highlightClassName="animated-gradient-text"
+                  />
+                </>
+              ) : (
+                <>
+                  Community Outreach &{" "}
+                  <TypewriterText
+                    words={[
+                      heroTitle,
+                      "Education For All",
+                      "Student Scholarships",
+                      "Empowering Communities",
+                      "Building Hope & Skills",
+                    ]}
+                    highlightClassName="animated-gradient-text"
+                  />
+                </>
+              )}
             </h1>
             <p className="text-sm sm:text-base text-slate-100 leading-relaxed max-w-2xl font-medium drop-shadow-[0_1px_8px_rgba(0,0,0,0.85)]">
               {heroDescription}
@@ -220,204 +250,173 @@ const Charity = () => {
       </section>
 
       {/* ======================================================
-          IMPACT
+          PAGE BODY WITH DOT MATRIX PATTERN
       ======================================================= */}
-      <section className="bg-white py-12 md:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-10 md:mb-12">
-            <span className="text-[#2563EB] text-xs font-bold uppercase tracking-widest">
-              {tr("charity.impactLabel", "Our Impact", "ឥទ្ធិពលរបស់យើង")}
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1.5">
-              {impactTitle}
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mt-2 max-w-lg mx-auto">
-              {impactDescription}
-            </p>
-          </div>
-
-          {loading ? (
-            <div className="flex min-h-[180px] items-center justify-center">
-              <div className="h-10 w-10 animate-spin rounded-full border-3 border-slate-200 border-t-[#2563EB]" />
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {impactItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <article
-                    key={item.title}
-                    className="card-lift bg-slate-50 border border-slate-200 rounded-2xl p-8 text-center shadow-sm"
-                  >
-                    <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 text-[#2563EB]">
-                      <Icon size={24} />
-                    </div>
-                    <h3 className="mb-2 text-base font-bold text-slate-900">
-                      {item.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm leading-relaxed text-slate-600">
-                      {item.description}
-                    </p>
-                  </article>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* ======================================================
-          HOW TO HELP
-      ======================================================= */}
-      <section className="bg-[#F8FAFC] py-12 md:py-16 border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-14">
-            <div>
-              <span className="text-xs uppercase tracking-widest font-bold text-[#2563EB]">
-                {tr("charity.joinLabel", "HOW YOU CAN HELP", "របៀបដែលអ្នកអាចជួយ")}
+      <div className="relative w-full bg-dot-matrix-page overflow-hidden">
+        {/* ======================================================
+            IMPACT
+        ======================================================= */}
+        <section className="bg-transparent py-12 md:py-16 scroll-reveal">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-10 md:mb-12">
+              <span className="text-[#2563EB] text-xs font-bold uppercase tracking-widest">
+                {tr("charity.impactLabel", "Our Impact", "ឥទ្ធិពលរបស់យើង")}
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1.5 mb-4">
-                {supportTitle}
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1.5">
+                {impactTitle}
               </h2>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-lg mb-6">
-                {supportDescription}
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mt-2 max-w-lg mx-auto">
+                {impactDescription}
               </p>
-
-              <Link
-                to="/contact"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] px-7 text-xs font-bold text-white shadow-sm transition active:scale-95"
-              >
-                <span>{tr("charity.contactButton", "Partner With Us", "ទាក់ទងមកយើង")}</span>
-                <FiArrowRight size={14} />
-              </Link>
             </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-[#2563EB]">
-                {tr("charity.optionsLabel", "Giving Opportunities", "វិធីចូលរួមគាំទ្រ")}
-              </span>
-              <h3 className="mb-5 text-lg font-bold text-slate-900 mt-1">
-                {tr("charity.optionsTitle", "Ways You Can Support", "វិធីដែលអ្នកអាចគាំទ្រ")}
-              </h3>
+            {loading ? (
+              <div className="flex min-h-[180px] items-center justify-center">
+                <div className="h-10 w-10 animate-spin rounded-full border-3 border-slate-200 border-t-[#2563EB]" />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {impactItems.map((item, idx) => {
+                  const Icon = item.icon;
+                  return (
+                    <article
+                      key={item.title}
+                      className={`card-lift bg-white border border-slate-200 rounded-2xl p-8 text-center shadow-sm scroll-reveal stagger-${idx + 1}`}
+                    >
+                      <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 text-[#2563EB]">
+                        <Icon size={24} />
+                      </div>
+                      <h3 className="mb-2 text-base font-bold text-slate-900">
+                        {item.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm leading-relaxed text-slate-600">
+                        {item.description}
+                      </p>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </section>
 
-              <div className="space-y-3">
-                {givingOptions.map((option, index) => (
-                  <div
-                    key={`${option}-${index}`}
-                    className="flex items-start gap-3 rounded-xl border border-slate-100 bg-slate-50 p-4"
-                  >
-                    <FiCheckCircle size={17} className="text-[#2563EB] shrink-0 mt-0.5" />
-                    <span className="text-xs sm:text-sm font-medium leading-relaxed text-slate-800">
-                      {option}
-                    </span>
-                  </div>
-                ))}
+        {/* ======================================================
+            HOW TO HELP
+        ======================================================= */}
+        <section className="bg-transparent py-12 md:py-16 scroll-reveal">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-14">
+              <div className="scroll-reveal-left">
+                <span className="text-xs uppercase tracking-widest font-bold text-[#2563EB]">
+                  {tr("charity.joinLabel", "HOW YOU CAN HELP", "របៀបដែលអ្នកអាចជួយ")}
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1.5 mb-4">
+                  {supportTitle}
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-lg mb-6">
+                  {supportDescription}
+                </p>
+
+                <Link
+                  to="/contact"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] px-7 text-xs font-bold text-white shadow-sm transition active:scale-95"
+                >
+                  <span>{tr("charity.contactButton", "Partner With Us", "ទាក់ទងមកយើង")}</span>
+                  <FiArrowRight size={14} />
+                </Link>
+              </div>
+
+              <div className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#2563EB]">
+                  {tr("charity.optionsLabel", "Giving Opportunities", "វិធីចូលរួមគាំទ្រ")}
+                </span>
+                <h3 className="mb-5 text-lg font-bold text-slate-900 mt-1">
+                  {tr("charity.optionsTitle", "Ways You Can Support", "វិធីដែលអ្នកអាចគាំទ្រ")}
+                </h3>
+
+                <div className="space-y-3">
+                  {givingOptions.map((option, index) => (
+                    <div
+                      key={`${option}-${index}`}
+                      className="flex items-start gap-3 rounded-xl border border-slate-100 bg-slate-50 p-4"
+                    >
+                      <FiCheckCircle size={17} className="text-[#2563EB] shrink-0 mt-0.5" />
+                      <span className="text-xs sm:text-sm font-medium leading-relaxed text-slate-800">
+                        {option}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ======================================================
-          CHARITY GALLERY
-      ======================================================= */}
-      <section className="bg-white py-12 md:py-16 border-t border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-10 md:mb-12">
-            <span className="text-[#2563EB] text-xs font-bold uppercase tracking-widest">
-              {tr("charity.galleryLabel", "Charity Activities", "សកម្មភាពសប្បុរសធម៌")}
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1.5">
-              {tr("charity.galleryTitle", "Our Outreach & Charity Gallery", "វិចិត្រសាលសកម្មភាពសប្បុរសធម៌")}
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mt-2">
-              {tr("charity.galleryDescription", "Explore our charity and community education activities.", "ស្វែងយល់ពីសកម្មភាពសប្បុរសធម៌ និងការអប់រំសហគមន៍របស់យើង។")}
-            </p>
-          </div>
-
-          {loading ? (
-            <div className="flex min-h-[220px] items-center justify-center">
-              <div className="h-10 w-10 animate-spin rounded-full border-3 border-slate-200 border-t-[#2563EB]" />
-            </div>
-          ) : images.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-6 py-16 text-center max-w-md mx-auto">
-              <FiHeart className="mx-auto text-slate-300" size={40} />
-              <h3 className="mt-3 text-sm font-bold text-slate-900">
-                {tr("charity.noImages", "No charity images available", "មិនទាន់មានរូបភាពសប្បុរសធម៌")}
-              </h3>
-              <p className="mt-1 text-xs text-slate-500">
-                {tr("charity.noImagesDescription", "Charity activity images will appear here after they are added.", "រូបភាពសកម្មភាពសប្បុរសធម៌នឹងបង្ហាញនៅទីនេះ បន្ទាប់ពីត្រូវបានបន្ថែម។")}
+        {/* ======================================================
+            CHARITY GALLERY
+        ======================================================= */}
+        <section className="bg-transparent py-12 md:py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-10 md:mb-12">
+              <span className="text-[#2563EB] text-xs font-bold uppercase tracking-widest">
+                {tr("charity.galleryLabel", "Charity Activities", "សកម្មភាពសប្បុរសធម៌")}
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1.5">
+                {tr("charity.galleryTitle", "Our Outreach & Charity Gallery", "វិចិត្រសាលសកម្មភាពសប្បុរសធម៌")}
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mt-2">
+                {tr("charity.galleryDescription", "Explore our charity and community education activities.", "ស្វែងយល់ពីសកម្មភាពសប្បុរសធម៌ និងការអប់រំសហគមន៍របស់យើង។")}
               </p>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {images.map((item) => {
-                const imageTitle = localizedImage(item, "title") || tr("charity.activity", "Charity Activity", "សកម្មភាពសប្បុរសធម៌");
-                const imageDescription = localizedImage(item, "description") || "";
 
-                return (
-                  <article key={item.id} className="card-lift group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm hover:border-slate-300 transition-all duration-300 flex flex-col">
-                    <div className="relative w-full aspect-[4/3] overflow-hidden bg-slate-100">
-                      <img
-                        src={getImageUrl(item.image_url || item.image)}
-                        alt={imageTitle}
-                        loading="lazy"
-                        decoding="async"
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        onError={(event) => { event.currentTarget.style.display = "none"; }}
-                      />
-                    </div>
-                    <div className="p-5 flex-grow">
-                      <h3 className="text-sm font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors line-clamp-1">
-                        {imageTitle}
-                      </h3>
-                      {imageDescription && (
-                        <p className="line-clamp-2 text-xs text-slate-600 leading-relaxed mt-1.5">
-                          {imageDescription}
-                        </p>
-                      )}
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </section>
+            {loading ? (
+              <div className="flex min-h-[220px] items-center justify-center">
+                <div className="h-10 w-10 animate-spin rounded-full border-3 border-slate-200 border-t-[#2563EB]" />
+              </div>
+            ) : images.length === 0 ? (
+              <EmptyState
+                icon={FiHeart}
+                title_km="មិនទាន់មានរូបភាពសប្បុរសធម៌នៅឡើយទេ"
+                title_en="No Charity Images Available"
+                description_km="រូបភាពសកម្មភាពសប្បុរសធម៌ និងការចែករំលែកសហគមន៍នឹងបង្ហាញនៅទីនេះពេលមានការបញ្ចូល។"
+                description_en="Charity and community outreach activity photos will appear here once added."
+              />
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {images.map((item) => {
+                  const imageTitle = localizedImage(item, "title") || tr("charity.activity", "Charity Activity", "សកម្មភាពសប្បុរសធម៌");
+                  const imageDescription = localizedImage(item, "description") || "";
 
-      {/* ======================================================
-          FINAL CTA
-      ======================================================= */}
-      <section className="bg-[#F8FAFC] py-14 md:py-20 border-t border-slate-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-slate-950 rounded-3xl border border-slate-800 p-8 md:p-14 text-center text-white shadow-xl">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[#2563EB] text-xs font-bold uppercase tracking-wider">
-              🤝 {tr("charity.ctaLabel", "Make a Difference", "បង្កើតការផ្លាស់ប្តូរ")}
-            </span>
-            <h2 className="mt-5 text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              {tr("charity.ctaTitle", "Help us create more learning opportunities.", "ជួយយើងបង្កើតឱកាសសិក្សាកាន់តែច្រើន។")}
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-xl mx-auto mt-3">
-              {tr("charity.ctaDescription", "Your contribution can help students gain knowledge, confidence and a stronger future.", "ការចូលរួមរបស់អ្នកអាចជួយសិស្សទទួលបានចំណេះដឹង ទំនុកចិត្ត និងអនាគតដ៏រឹងមាំ។")}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
-              <Link
-                to="/contact"
-                className="w-full sm:w-auto h-12 px-8 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl text-xs sm:text-sm font-bold inline-flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95"
-              >
-                <span>{tr("charity.contactButton", "Get Involved", "ទាក់ទងមកយើង")}</span>
-                <FiArrowRight size={14} />
-              </Link>
-              <Link
-                to="/courses"
-                className="w-full sm:w-auto h-12 px-8 bg-slate-900 border border-slate-700 hover:bg-slate-800 text-white rounded-xl text-xs sm:text-sm font-bold inline-flex items-center justify-center transition-all"
-              >
-                {tr("courses.viewAll", "Explore Programs", "ស្វែងយល់វគ្គសិក្សា")}
-              </Link>
-            </div>
+                  return (
+                    <article key={item.id} className="card-lift group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm hover:border-slate-300 transition-all duration-300 flex flex-col">
+                      <div className="relative w-full aspect-[4/3] overflow-hidden bg-slate-100">
+                        <img
+                          src={getImageUrl(item.image_url || item.image)}
+                          alt={imageTitle}
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          onError={(event) => { event.currentTarget.style.display = "none"; }}
+                        />
+                      </div>
+                      <div className="p-5 flex-grow">
+                        <h3 className="text-sm font-bold text-slate-900 group-hover:text-[#2563EB] transition-colors line-clamp-1">
+                          {imageTitle}
+                        </h3>
+                        {imageDescription && (
+                          <p className="line-clamp-2 text-xs text-slate-600 leading-relaxed mt-1.5">
+                            {imageDescription}
+                          </p>
+                        )}
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
   );
 };

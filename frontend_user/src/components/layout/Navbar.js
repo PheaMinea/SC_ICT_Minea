@@ -23,9 +23,9 @@ import {
   faTiktok,
 } from "@fortawesome/free-brands-svg-icons";
 
-import logo from "./logo.webp";
 import { useLanguage } from "../../context/LanguageContext";
 import { useTheme } from "../../context/ThemeContext";
+import { useSettings } from "../../context/SettingsContext";
 
 /* =========================================================
    DATA
@@ -78,12 +78,12 @@ const NAV_LINKS = [
 
 const SOCIAL_LINKS = [
   {
-    href: "https://facebook.com",
+    href: "https://www.facebook.com/sc.academy.117",
     label: "Facebook",
     icon: faFacebookF,
   },
   {
-    href: "https://instagram.com",
+    href: "https://www.instagram.com/sc.academy.117/",
     label: "Instagram",
     icon: faInstagram,
   },
@@ -93,21 +93,22 @@ const SOCIAL_LINKS = [
     icon: faTelegramPlane,
   },
   {
-    href: "https://youtube.com",
+    href: "https://www.youtube.com/@SCAcademy-Cambodia",
     label: "YouTube",
     icon: faYoutube,
   },
   {
-    href: "https://tiktok.com",
+    href: "https://www.tiktok.com/@sc_academy_official?_r=1&_t=ZS-99AivFTtumT",
     label: "TikTok",
     icon: faTiktok,
   },
 ];
 
 const CONTACT = {
-  phone: "+855 86 306 615",
-  email: "info@scacademy.edu.kh",
-  location: "Phnom Penh, Cambodia",
+  phone: "086 306 615",
+  email: "scacademy9@gmail.com",
+  location: "14 Street 349, Phnom Penh",
+  mapLink: "https://maps.app.goo.gl/y19U8vRnrNh8tSvo8",
 };
 
 const LANGUAGE_OPTIONS = [
@@ -152,7 +153,7 @@ const TopBarContact = ({ Icon, href, children, scrolled }) => (
           ? `
               border-white/70
               bg-white/35
-              shadow-[0_3px_12px_rgba(15,23,42,0.06)]
+              shadow-[0_4px_12px_rgba(0,0,0,0.15)]
               backdrop-blur-md
             `
           : `
@@ -164,9 +165,9 @@ const TopBarContact = ({ Icon, href, children, scrolled }) => (
       }
     `}
   >
-    <Icon className="flex-shrink-0 text-[14px]" />
+    <Icon className="flex-shrink-0 text-[13px]" />
 
-    <span className="whitespace-nowrap text-[13px] font-medium">
+    <span className="whitespace-nowrap text-[12px] font-medium">
       {children}
     </span>
   </a>
@@ -176,8 +177,11 @@ const TopBarContact = ({ Icon, href, children, scrolled }) => (
    TOP BAR LOCATION
 ========================================================= */
 
-const TopBarLocation = ({ Icon, children, scrolled }) => (
-  <div
+const TopBarLocation = ({ Icon, href, children, scrolled }) => (
+  <a
+    href={href || "https://maps.app.goo.gl/y19U8vRnrNh8tSvo8"}
+    target="_blank"
+    rel="noopener noreferrer"
     className={`
       flex
       h-[32px]
@@ -188,16 +192,16 @@ const TopBarLocation = ({ Icon, children, scrolled }) => (
       px-3
       transition-all
       duration-500
+      hover:-translate-y-[1px]
+      ${scrolled ? "text-[#171717] hover:text-[#143DAA]" : "text-white hover:text-white/90"}
       xl:px-4
-
-      ${scrolled ? "text-[#171717]" : "text-white"}
 
       ${
         scrolled
           ? `
               border-white/70
               bg-white/35
-              shadow-[0_3px_12px_rgba(15,23,42,0.06)]
+              shadow-[0_4px_12px_rgba(0,0,0,0.15)]
               backdrop-blur-md
             `
           : `
@@ -209,12 +213,12 @@ const TopBarLocation = ({ Icon, children, scrolled }) => (
       }
     `}
   >
-    <Icon className="flex-shrink-0 text-[14px]" />
+    <Icon className="flex-shrink-0 text-[13px]" />
 
-    <span className="whitespace-nowrap text-[13px] font-medium">
+    <span className="whitespace-nowrap text-[12px] font-medium">
       {children}
     </span>
-  </div>
+  </a>
 );
 
 /* =========================================================
@@ -248,7 +252,7 @@ const SocialIcon = ({ href, label, icon, scrolled }) => (
           ? `
               border-white/70
               bg-white/30
-              shadow-sm
+              shadow-[0_4px_12px_rgba(0,0,0,0.15)]
               backdrop-blur-md
             `
           : `
@@ -403,53 +407,51 @@ const NavLink = ({
       relative
       flex
       h-[38px]
-      min-w-[100px]
       items-center
       justify-center
       whitespace-nowrap
       rounded-full
-      border
-      px-6
-      text-[15px]
-      font-medium
+      px-5
+      text-[14px]
+      xl:text-[15px]
+      font-semibold
       transition-all
       duration-300
-      xl:px-7
-
       ${isKhmer ? "font-khmer" : ""}
 
       ${
         !scrolled
-          ? `
-              border-transparent
-              bg-transparent
-              shadow-none
-              ring-0
-              backdrop-blur-none
-              ${active ? "font-semibold" : ""} text-white
-            `
-          : active
+          ? active
             ? `
-                border-[#143DAA]/55
-                bg-white/70
-                font-semibold
-                text-[#143DAA]
-                shadow-[0_8px_22px_rgba(20,61,170,0.14),inset_0_1px_0_rgba(255,255,255,0.95)]
-                ring-1
-                ring-[#143DAA]/15
-                backdrop-blur-xl
+                bg-white/20
+                text-white
+                backdrop-blur-md
+                border border-white/35
+                shadow-[0_2px_12px_rgba(255,255,255,0.15)]
               `
             : `
-                border-[#143DAA]/25
-                bg-white/30
-                text-[#171717]
-                shadow-[0_6px_18px_rgba(20,61,170,0.08),inset_0_1px_0_rgba(255,255,255,0.80)]
-                backdrop-blur-xl
-                hover:-translate-y-[2px]
-                hover:border-[#143DAA]/55
-                hover:bg-white/60
-                hover:text-[#143DAA]
-                hover:shadow-[0_10px_26px_rgba(20,61,170,0.15)]
+                text-white/90
+                hover:text-white
+                hover:bg-white/12
+                border border-transparent
+                hover:-translate-y-[1px]
+              `
+          : active
+            ? `
+                bg-[#2563EB]
+                text-white
+                shadow-[0_4px_16px_rgba(37,99,235,0.32)]
+                border border-blue-400/30
+              `
+            : `
+                text-slate-700
+                dark:text-slate-200
+                hover:text-[#2563EB]
+                dark:hover:text-blue-400
+                hover:bg-blue-500/10
+                dark:hover:bg-blue-400/10
+                border border-transparent
+                hover:-translate-y-[1px]
               `
       }
     `}
@@ -474,26 +476,26 @@ const MobileNavLink = ({
     onClick={onClick}
     className={`
       flex
-      min-h-[38px]
+      min-h-[42px]
       w-full
       items-center
-      rounded-[10px]
+      rounded-xl
       px-4
-      text-[13px]
-      font-medium
+      text-[13.5px]
+      font-semibold
       transition-all
-      duration-300
+      duration-200
 
       ${isKhmer ? "font-khmer" : ""}
 
       ${
         active
-          ? "bg-[#143DAA] text-white"
+          ? "bg-[#2563EB] text-white shadow-sm font-bold"
           : `
-            bg-[#F5F7FB]
-            text-[#1F2937]
-            hover:bg-[#143DAA]/10
-            hover:text-[#143DAA]
+            bg-slate-50 dark:bg-slate-800/60
+            text-slate-800 dark:text-slate-200
+            hover:bg-[#2563EB]/10
+            hover:text-[#2563EB] dark:hover:text-blue-400
           `
       }
     `}
@@ -535,6 +537,7 @@ const Navbar = () => {
   } = useLanguage();
 
   const { isDark, toggleTheme } = useTheme();
+  const { settings, logo: siteLogo } = useSettings();
 
   const isKhmer = language === "km";
 
@@ -688,7 +691,7 @@ const Navbar = () => {
           relative
           z-[200]
           hidden
-          h-[50px]
+          h-[60px]
           items-center
           overflow-visible
           px-8
@@ -702,7 +705,7 @@ const Navbar = () => {
             relative
             z-[200]
             flex
-            h-[40px]
+            h-[50px]
             w-full
             items-center
             justify-between
@@ -737,22 +740,22 @@ const Navbar = () => {
           <div className="flex h-full items-center gap-2 xl:gap-2.5">
             <TopBarContact
               Icon={FiPhone}
-              href={`tel:${CONTACT.phone}`}
+              href={`tel:${settings.phone || CONTACT.phone}`}
               scrolled={scrolled}
             >
-              {CONTACT.phone}
+              {settings.phone || CONTACT.phone}
             </TopBarContact>
 
             <TopBarContact
               Icon={FiMail}
-              href={`mailto:${CONTACT.email}`}
+              href={`mailto:${settings.email || CONTACT.email}`}
               scrolled={scrolled}
             >
-              {CONTACT.email}
+              {settings.email || CONTACT.email}
             </TopBarContact>
 
-            <TopBarLocation Icon={FiMapPin} scrolled={scrolled}>
-              {CONTACT.location}
+            <TopBarLocation Icon={FiMapPin} href={settings.google_map_url || CONTACT.mapLink} scrolled={scrolled}>
+              {(isKhmer ? settings.address_km : settings.address_en) || CONTACT.location}
             </TopBarLocation>
           </div>
 
@@ -815,15 +818,14 @@ const Navbar = () => {
             relative
             flex
             h-[78px]
-            w-[300px]
-            min-w-[300px]
+            w-[330px]
+            min-w-[330px]
             items-center
             overflow-hidden
-            pl-[52px]
+            pl-[90px]
           "
         >
-          {/* BLUE SHAPE */}
-
+          {/* GLASS COLOR SHAPE - FULL NAVBAR HEIGHT */}
           <svg
             className={`
               pointer-events-none
@@ -843,40 +845,35 @@ const Navbar = () => {
             <path
               d="
                 M0 0
-                H220
-                C275 0 302 7 314 22
-                C328 40 326 54 346 65
-                C362 74 383 77 400 78
+                H230
+                C285 0 310 7 322 22
+                C336 40 334 54 354 65
+                C370 74 388 77 400 78
                 H0
                 V0
                 Z
               "
-              fill="#143DAA"
+              fill="rgba(20, 61, 170, 0.85)"
+              stroke="rgba(255, 255, 255, 0.5)"
+              strokeWidth="1"
+              style={{ filter: "drop-shadow(4px 4px 8px rgba(0, 0, 0, 0.15))" }}
             />
           </svg>
 
-          {/* DESKTOP LOGO WITH WHITE STROKE */}
+          {/* DESKTOP LOGO */}
 
-          <img
-            src={logo}
-            alt="SC Academy"
-            className="
-              relative
-              z-10
-
-              max-h-[54px]
-              w-[88px]
-
-              object-contain
-
-              transition-transform
-              duration-300
-
-              [filter:drop-shadow(1px_0_0_white)_drop-shadow(-1px_0_0_white)_drop-shadow(0_1px_0_white)_drop-shadow(0_-1px_0_white)]
-
-              group-hover:scale-105
-            "
-          />
+          <div className={`relative z-10 rounded-full h-[64px] w-[64px] flex items-center justify-center transition-all duration-300 group-hover:scale-105 ${scrolled ? "bg-white/95 shadow-[0_2px_12px_rgba(0,0,0,0.15)]" : "bg-transparent shadow-none"}`}>
+            <img
+              src={siteLogo || "/logo.png"}
+              alt={isKhmer ? (settings.site_name_km || "SC Academy") : (settings.site_name_en || "SC Academy")}
+              className="
+                h-full
+                w-full
+                p-1.5
+                object-contain
+              "
+            />
+          </div>
         </Link>
 
         {/* NAVIGATION AREA */}
@@ -1019,78 +1016,40 @@ const Navbar = () => {
             )}
           </button>
 
-          {/* ENROLL */}
-
+          {/* ENROLL BUTTON (SHIMMERING BRAND GRADIENT) */}
           <Link
             to="/courses"
-            className={`
-              group
-              ml-2
-              flex
-              h-[48px]
-              min-w-[142px]
-              flex-shrink-0
+            className="
+              ml-3
+              inline-flex
               items-center
-              justify-between
+              justify-center
               gap-2
+              px-6
+              h-[42px]
               rounded-full
-              pl-5
-              pr-[5px]
+              bg-gradient-to-r from-[#1D4ED8] via-[#2563EB] to-[#38BDF8]
+              text-white
+              text-[14px]
+              font-bold
+              shadow-[0_4px_16px_rgba(37,99,235,0.35)]
+              hover:shadow-[0_6px_22px_rgba(37,99,235,0.5)]
               transition-all
-              duration-500
-              hover:-translate-y-[1px]
-              xl:min-w-[150px]
-
-              ${
-                scrolled
-                  ? `
-                      bg-[#EF233C]
-                      text-white
-                      shadow-[0_6px_18px_rgba(239,35,60,0.22)]
-                      hover:bg-[#D91A2A]
-                    `
-                  : `
-                      bg-transparent
-                      text-white
-                      shadow-none
-                    `
-              }
-            `}
+              duration-300
+              hover:scale-[1.02]
+              active:scale-95
+              btn-shimmer-sweep
+              whitespace-nowrap
+            "
           >
-            <span
-              className={`
-                whitespace-nowrap
-                text-[13px]
-                font-bold
-                xl:text-[14px]
-                ${isKhmer ? "font-khmer" : ""}
-              `}
-            >
+            <span className={isKhmer ? "font-khmer" : ""}>
               {getLabel(
                 "nav.enroll",
                 "Enroll Now",
                 "ចុះឈ្មោះ"
               )}
             </span>
-
-            <span
-              className="
-                flex
-                h-[38px]
-                w-[38px]
-                flex-shrink-0
-                items-center
-                justify-center
-                rounded-full
-                bg-white/15
-                transition-all
-                duration-300
-                group-hover:rotate-[8deg]
-                group-hover:scale-110
-              "
-            >
-              <FiArrowUpRight size={17} />
-            </span>
+            <FiArrowUpRight size={16} />
           </Link>
         </div>
       </div>
@@ -1127,50 +1086,36 @@ const Navbar = () => {
           onClick={handleLogoClick}
           className={`
             mobile-logo-area
-
             relative
             flex
             h-full
-            w-[118px]
+            w-[145px]
             items-center
-
             overflow-hidden
-
             rounded-br-[25px]
-
             transition-all
             duration-500
-
             ${scrolled ? "bg-[#143DAA]" : "bg-transparent"}
-
             pl-3
-
-            sm:w-[140px]
+            sm:w-[170px]
             sm:pl-4
+            shrink-0
           `}
         >
-          {/* MOBILE LOGO WITH WHITE STROKE */}
+          {/* MOBILE LOGO */}
 
-          <img
-            src={logo}
-            alt="SC Academy"
-            className="
-              mobile-logo
-
-              relative
-              z-10
-
-              w-[50px]
-              max-h-[32px]
-
-              object-contain
-
-              sm:w-[58px]
-              sm:max-h-[36px]
-
-              [filter:drop-shadow(1px_0_0_white)_drop-shadow(-1px_0_0_white)_drop-shadow(0_1px_0_white)_drop-shadow(0_-1px_0_white)]
-            "
-          />
+          <div className={`relative z-10 rounded-full h-[44px] w-[44px] sm:h-[50px] sm:w-[50px] flex items-center justify-center shrink-0 transition-all duration-300 ${scrolled ? "bg-white/95 shadow-[0_2px_8px_rgba(0,0,0,0.15)]" : "bg-transparent shadow-none"}`}>
+            <img
+              src={siteLogo || "/logo.png"}
+              alt={isKhmer ? (settings.site_name_km || "SC Academy") : (settings.site_name_en || "SC Academy")}
+              className="
+                h-full
+                w-full
+                p-1
+                object-contain
+              "
+            />
+          </div>
         </Link>
 
         {/* MOBILE ACTIONS */}
@@ -1396,22 +1341,21 @@ const Navbar = () => {
             className="
               mt-4
               flex
-              h-[42px]
+              h-[44px]
               items-center
               justify-between
-              rounded-full
-              bg-[#EF233C]
-              pl-5
-              pr-1
+              rounded-xl
+              bg-gradient-to-r from-[#1D4ED8] via-[#2563EB] to-[#38BDF8]
+              px-5
               text-white
-              transition-colors
-              hover:bg-[#D91A2A]
+              font-bold
+              shadow-md
+              btn-shimmer-sweep
             "
           >
             <span
               className={`
-                text-[13px]
-                font-bold
+                text-[14px]
                 ${isKhmer ? "font-khmer" : ""}
               `}
             >
@@ -1422,19 +1366,7 @@ const Navbar = () => {
               )}
             </span>
 
-            <span
-              className="
-                flex
-                h-[34px]
-                w-[34px]
-                items-center
-                justify-center
-                rounded-full
-                bg-white/15
-              "
-            >
-              <FiArrowUpRight size={15} />
-            </span>
+            <FiArrowUpRight size={17} />
           </Link>
 
           {/* LANGUAGE */}
@@ -1537,7 +1469,7 @@ const Navbar = () => {
             <div className="flex flex-col gap-2">
 
               <a
-                href={`tel:${CONTACT.phone}`}
+                href={`tel:${settings.phone || CONTACT.phone}`}
                 className="
                   flex
                   items-center
@@ -1552,11 +1484,11 @@ const Navbar = () => {
               >
                 <FiPhone size={14} />
 
-                <span>{CONTACT.phone}</span>
+                <span>{settings.phone || CONTACT.phone}</span>
               </a>
 
               <a
-                href={`mailto:${CONTACT.email}`}
+                href={`mailto:${settings.email || CONTACT.email}`}
                 className="
                   flex
                   items-center
@@ -1571,7 +1503,7 @@ const Navbar = () => {
               >
                 <FiMail size={14} />
 
-                <span>{CONTACT.email}</span>
+                <span>{settings.email || CONTACT.email}</span>
               </a>
 
               <div

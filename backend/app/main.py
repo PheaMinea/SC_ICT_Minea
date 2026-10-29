@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from fastapi import FastAPI, Request
@@ -30,6 +32,7 @@ from .routers import (
     testimonials,
     schools,
     alumni,
+    language,
 )
 
 
@@ -73,6 +76,62 @@ Base.metadata.create_all(
 
 
 # ============================================================
+# REVOKED TOKEN CLEANUP
+# ============================================================
+#
+# Tokens that are older than ACCESS_TOKEN_EXPIRE_MINUTES
+# are already expired — they can NEVER be used again.
+# Safe to delete them so the revoked_tokens table
+# does not grow forever.
+#
+# ============================================================
+
+def cleanup_expired_revoked_tokens() -> int:
+    from .db.database import SessionLocal
+    from .models import RevokedToken
+
+    cutoff = (
+        datetime.now(timezone.utc)
+        - timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    )
+
+    db = SessionLocal()
+    try:
+        deleted = (
+            db.query(RevokedToken)
+            .filter(RevokedToken.revoked_at < cutoff)
+            .delete(synchronize_session=False)
+        )
+        db.commit()
+        return deleted
+    except Exception:
+        db.rollback()
+        return 0
+    finally:
+        db.close()
+
+
+# ============================================================
+# LIFESPAN — startup / shutdown
+# ============================================================
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # ---------------------------------------------------
+    # STARTUP: clean up expired revoked tokens
+    # ---------------------------------------------------
+    deleted = cleanup_expired_revoked_tokens()
+    if deleted:
+        print(f"[Startup] Cleaned {deleted} expired revoked token(s).")
+
+    yield
+
+    # ---------------------------------------------------
+    # SHUTDOWN (nothing needed)
+    # ---------------------------------------------------
+
+
+# ============================================================
 # FASTAPI APPLICATION
 # ============================================================
 
@@ -85,6 +144,8 @@ app = FastAPI(
     ),
 
     version="1.0.0",
+
+    lifespan=lifespan,
 
     docs_url=(
         None
@@ -180,9 +241,9 @@ PRODUCTION_ORIGINS = [
     # Add your real domains here
     # ========================================================
 
-    # "https://scacademy.com",
-    # "https://www.scacademy.com",
-    # "https://admin.scacademy.com",
+    "https://scacademy.tech",
+    "https://www.scacademy.tech",
+    "https://admin.scacademy.tech",
 
 ]
 
@@ -438,6 +499,17 @@ app.include_router(
     settings_router.router,
     prefix="/api/settings",
     tags=["Settings"],
+)
+
+
+# ============================================================
+# LANGUAGE SYNC
+# ============================================================
+
+app.include_router(
+    language.router,
+    prefix="/api/language",
+    tags=["Language"],
 )
 
 

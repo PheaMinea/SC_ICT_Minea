@@ -23,6 +23,69 @@ router = APIRouter()
 
 
 # =========================================================
+# GET DASHBOARD STATS (LIVE DATA)
+# =========================================================
+
+@router.get("/dashboard-stats")
+def get_dashboard_stats(
+    db: Session = Depends(get_db),
+    current_admin=Depends(get_current_active_admin),
+):
+    """
+    Get aggregated live real statistics for Admin Dashboard.
+    """
+    try:
+        from .. import models
+        total_admins = db.query(models.Admin).count()
+        total_courses = db.query(models.Course).count()
+        total_messages = db.query(models.ContactMessage).count()
+        total_gallery = db.query(models.GalleryImage).count()
+        total_videos = db.query(models.Video).count()
+        total_schools = db.query(models.School).count()
+        total_enrollments = db.query(models.Enrollment).count()
+
+        male_students = db.query(models.Enrollment).filter(models.Enrollment.gender == "male").count()
+        female_students = db.query(models.Enrollment).filter(models.Enrollment.gender == "female").count()
+
+        # Recent Messages
+        recent_messages = (
+            db.query(models.ContactMessage)
+            .order_by(models.ContactMessage.created_at.desc())
+            .limit(5)
+            .all()
+        )
+
+        messages_list = [
+            {
+                "id": m.id,
+                "name": m.name,
+                "email": m.email,
+                "subject": m.subject,
+                "message": m.message,
+                "created_at": m.created_at.strftime("%Y-%m-%d %H:%M") if m.created_at else None,
+            }
+            for m in recent_messages
+        ]
+
+        return {
+            "total_admin": total_admins,
+            "total_courses": total_courses,
+            "total_messages": total_messages,
+            "total_gallery": total_gallery,
+            "total_videos": total_videos,
+            "total_schools": total_schools,
+            "total_students": total_enrollments,
+            "recent_messages": messages_list,
+        }
+    except Exception as e:
+        logger.error("Get Dashboard Stats Error: %s", e)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to load dashboard statistics"
+        )
+
+
+# =========================================================
 # GET ALL ADMINS
 # =========================================================
 

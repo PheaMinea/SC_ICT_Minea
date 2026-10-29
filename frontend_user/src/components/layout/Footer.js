@@ -17,16 +17,15 @@ import {
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 
-import logo from "./logo.webp";
 import telegramQr1 from "./telegram_qr.png";
 import telegramQr2 from "./telegram_qr_02.png";
 
 import { useLanguage } from "../../context/LanguageContext";
-import { useTheme } from "../../context/ThemeContext";
+import { useSettings } from "../../context/SettingsContext";
 
 const Footer = () => {
   const { language, t } = useLanguage();
-  const { isDark } = useTheme();
+  const { settings, logo: siteLogo } = useSettings();
   const isKhmer = language === "km";
   const currentYear = new Date().getFullYear();
 
@@ -40,8 +39,6 @@ const Footer = () => {
     { to: "/courses", label: tr("nav.courses", "Programs", "កម្មវិធីសិក្សា") },
     { to: "/school", label: tr("nav.school", "School", "សាលារៀន") },
     { to: "/charity", label: tr("nav.charity", "Charity", "សប្បុរសធម៌") },
-    { to: "/gallery", label: tr("nav.gallery", "Gallery", "រូបភាព") },
-    { to: "/videos", label: tr("nav.videos", "Videos", "វីដេអូ") },
   ];
 
   const programLinks = [
@@ -65,11 +62,11 @@ const Footer = () => {
 
   // Social Links
   const socialLinks = [
-    { href: "https://facebook.com", label: "Facebook", icon: faFacebookF },
-    { href: "https://t.me/SC_Academy", label: "Telegram", icon: faTelegramPlane },
-    { href: "https://youtube.com", label: "YouTube", icon: faYoutube },
-    { href: "https://tiktok.com", label: "TikTok", icon: faTiktok },
-    { href: "https://instagram.com", label: "Instagram", icon: faInstagram },
+    { href: settings.facebook_url || "https://www.facebook.com/sc.academy.117", label: "Facebook", icon: faFacebookF },
+    { href: settings.telegram_url || "https://t.me/SC_Academy", label: "Telegram", icon: faTelegramPlane },
+    { href: settings.youtube_url || "https://www.youtube.com/@SCAcademy-Cambodia", label: "YouTube", icon: faYoutube },
+    { href: "https://www.tiktok.com/@sc_academy_official?_r=1&_t=ZS-99AivFTtumT", label: "TikTok", icon: faTiktok },
+    { href: "https://www.instagram.com/sc.academy.117/", label: "Instagram", icon: faInstagram },
   ];
 
   const scrollTop = () => {
@@ -93,8 +90,8 @@ const Footer = () => {
     <footer
       className={`relative overflow-hidden border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 ${isKhmer ? "font-khmer" : "font-english"}`}
     >
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] lg:gap-10">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] gap-8 sm:gap-10">
           
           {/* BRAND SECTION */}
           <div>
@@ -105,7 +102,7 @@ const Footer = () => {
               aria-label="SC Academy Home"
             >
               <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-1.5 shadow-sm transition duration-300 group-hover:border-[#2563EB]">
-                <img src={logo} alt="SC Academy Logo" className="h-full w-full object-contain" />
+                <img src={siteLogo || "/logo.png"} alt="SC Academy Logo" className="h-full w-full object-contain" />
               </div>
 
               <div>
@@ -119,15 +116,16 @@ const Footer = () => {
             </Link>
 
             <p className="mt-4 max-w-sm text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-              {tr(
-                "footer.description",
-                "Building knowledge, practical skills and future leaders through quality education and meaningful learning experiences.",
-                "កសាងចំណេះដឹង ជំនាញអនុវត្ត និងអ្នកដឹកនាំនាពេលអនាគត តាមរយៈការអប់រំប្រកបដោយគុណភាព និងបទពិសោធន៍សិក្សាដ៏មានន័យ។"
-              )}
+              {(isKhmer ? settings.site_description_km : settings.site_description_en) ||
+                tr(
+                  "footer.description",
+                  "Building knowledge, practical skills and future leaders through quality education and meaningful learning experiences.",
+                  "កសាងចំណេះដឹង ជំនាញអនុវត្ត និងអ្នកដឹកនាំនាពេលអនាគត តាមរយៈការអប់រំប្រកបដោយគុណភាព និងបទពិសោធន៍សិក្សាដ៏មានន័យ។"
+                )}
             </p>
 
             {/* Social Icons */}
-            <div className="mt-5 flex flex-wrap items-center gap-2">
+            <div className="mt-4 sm:mt-5 flex items-center gap-2 sm:gap-2.5">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
@@ -136,7 +134,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   aria-label={social.label}
                   title={social.label}
-                  className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-[#2563EB] hover:bg-[#2563EB] hover:text-white"
+                  className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-[#2563EB] hover:bg-[#2563EB] hover:text-white"
                 >
                   <FontAwesomeIcon icon={social.icon} className="text-xs" />
                 </a>
@@ -144,28 +142,28 @@ const Footer = () => {
             </div>
 
             {/* Telegram QR codes */}
-            <div className="mt-6 flex flex-wrap items-start gap-3">
+            <div className="mt-5 sm:mt-6 flex flex-row items-center gap-3">
               {/* QR Code 1 */}
               <div className="flex flex-col items-center">
                 <a 
                   href="https://t.me/SC_Academy" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="group/qr flex flex-col items-center overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-2 shadow-sm transition-all duration-300 hover:border-[#2563EB]"
+                  className="w-[110px] sm:w-[125px] group/qr flex flex-col items-center overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-2 shadow-sm transition-all duration-300 hover:border-[#2563EB]"
                 >
-                  <div className="h-20 w-20">
+                  <div className="h-16 w-16 sm:h-20 sm:w-20">
                     <img 
                       src={telegramQr1} 
                       alt="SC Academy Telegram QR" 
                       className="h-full w-full object-contain"
                     />
                   </div>
-                  <span className="mt-1 inline-flex items-center gap-1 text-[10px] font-bold text-[#2563EB]">
-                    <FontAwesomeIcon icon={faTelegramPlane} className="text-[10px]" />
+                  <span className="mt-1 inline-flex items-center gap-1 text-[9.5px] sm:text-[10px] font-bold text-[#2563EB]">
+                    <FontAwesomeIcon icon={faTelegramPlane} className="text-[9px]" />
                     Telegram
                   </span>
                 </a>
-                <p className="mt-1 text-[11px] font-semibold text-slate-600 dark:text-slate-400">
+                <p className="mt-1 text-[10px] sm:text-[11px] font-semibold text-slate-600 dark:text-slate-400 text-center">
                   {tr("footer.qrContact", "Official Contact", "ព័ត៌មានទំនាក់ទំនង")}
                 </p>
               </div>
@@ -176,21 +174,21 @@ const Footer = () => {
                   href="https://t.me/SCACADEMY01" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="group/qr flex flex-col items-center overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-2 shadow-sm transition-all duration-300 hover:border-[#2563EB]"
+                  className="w-[110px] sm:w-[125px] group/qr flex flex-col items-center overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-2 shadow-sm transition-all duration-300 hover:border-[#2563EB]"
                 >
-                  <div className="h-20 w-20">
+                  <div className="h-16 w-16 sm:h-20 sm:w-20">
                     <img 
                       src={telegramQr2} 
                       alt="SCACADEMY01 Telegram QR" 
                       className="h-full w-full object-contain"
                     />
                   </div>
-                  <span className="mt-1 inline-flex items-center gap-1 text-[10px] font-bold text-[#2563EB]">
-                    <FontAwesomeIcon icon={faTelegramPlane} className="text-[10px]" />
+                  <span className="mt-1 inline-flex items-center gap-1 text-[9.5px] sm:text-[10px] font-bold text-[#2563EB]">
+                    <FontAwesomeIcon icon={faTelegramPlane} className="text-[9px]" />
                     Channel
                   </span>
                 </a>
-                <p className="mt-1 text-[11px] font-semibold text-slate-600 dark:text-slate-400">
+                <p className="mt-1 text-[10px] sm:text-[11px] font-semibold text-slate-600 dark:text-slate-400 text-center">
                   {tr("footer.qrChannel", "Channel Info", "ឆានែលព័ត៌មាន")}
                 </p>
               </div>
@@ -250,48 +248,49 @@ const Footer = () => {
               tr("footer.contactInfo", "Campus Info", "ព័ត៌មានទំនាក់ទំនង")
             )}
 
-            <div className="space-y-3.5">
+            <div className="space-y-2.5 sm:space-y-3.5">
               {/* Address */}
-              <div className="flex items-start gap-3">
-                <div className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-900 text-[#2563EB]">
-                  <FiMapPin size={15} />
+              <div className="flex items-start gap-2.5 sm:gap-3">
+                <div className="flex h-8 w-8 sm:h-9 sm:w-9 flex-none items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-900 text-[#2563EB]">
+                  <FiMapPin size={14} />
                 </div>
                 <div className="pt-0.5">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  <p className="text-[9.5px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     {tr("footer.address", "Address", "អាសយដ្ឋាន")}
                   </p>
                   <p className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 mt-0.5">
-                    {tr("footer.addressLine1", "AP Plaza, Preah Monivong Blvd, Phnom Penh", "អគារ AP Plaza, ព្រះមុនីវង្ស, ភ្នំពេញ")}
+                    {(isKhmer ? settings.address_km : settings.address_en) ||
+                      tr("footer.addressLine1", "14 Street 349, Phnom Penh", "14 Street 349, Phnom Penh")}
                   </p>
                 </div>
               </div>
 
               {/* Phone */}
-              <div className="flex items-start gap-3">
-                <div className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-900 text-[#2563EB]">
-                  <FiPhone size={15} />
+              <div className="flex items-start gap-2.5 sm:gap-3">
+                <div className="flex h-8 w-8 sm:h-9 sm:w-9 flex-none items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-900 text-[#2563EB]">
+                  <FiPhone size={14} />
                 </div>
                 <div className="pt-0.5">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  <p className="text-[9.5px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     {tr("footer.phone", "Phone", "ទូរស័ព្ទ")}
                   </p>
-                  <a href="tel:+85586306615" className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-[#2563EB] transition mt-0.5 block">
-                    +855 86 306 615
+                  <a href={`tel:${settings.phone || "+85586306615"}`} className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-[#2563EB] transition mt-0.5 block">
+                    {settings.phone || "086 306 615"}
                   </a>
                 </div>
               </div>
 
               {/* Email */}
-              <div className="flex items-start gap-3">
-                <div className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-900 text-[#2563EB]">
-                  <FiMail size={15} />
+              <div className="flex items-start gap-2.5 sm:gap-3">
+                <div className="flex h-8 w-8 sm:h-9 sm:w-9 flex-none items-center justify-center rounded-xl bg-blue-50 dark:bg-slate-900 text-[#2563EB]">
+                  <FiMail size={14} />
                 </div>
                 <div className="pt-0.5">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                  <p className="text-[9.5px] sm:text-[10px] font-bold uppercase tracking-wider text-slate-400">
                     {tr("footer.email", "Email", "អ៊ីមែល")}
                   </p>
-                  <a href="mailto:info@scacademy.edu.kh" className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-[#2563EB] transition mt-0.5 block">
-                    info@scacademy.edu.kh
+                  <a href={`mailto:${settings.email || "scacademy9@gmail.com"}`} className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200 hover:text-[#2563EB] transition mt-0.5 block">
+                    {settings.email || "scacademy9@gmail.com"}
                   </a>
                 </div>
               </div>
@@ -300,7 +299,7 @@ const Footer = () => {
             <Link
               to="/contact"
               onClick={scrollTop}
-              className="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] px-5 text-xs font-bold text-white shadow-sm transition active:scale-95"
+              className="mt-4 inline-flex h-9 sm:h-10 items-center justify-center gap-2 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] px-4 sm:px-5 text-xs font-bold text-white shadow-sm transition active:scale-95"
             >
               <span>{tr("common.contactUs", "Contact Us", "ទាក់ទងមកយើង")}</span>
               <FiArrowUpRight size={14} />
@@ -313,7 +312,7 @@ const Footer = () => {
       <div className="relative z-10 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 py-4">
         <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-2 px-4 sm:px-6 md:flex-row lg:px-8 text-xs text-slate-500 dark:text-slate-400">
           <p>
-            © {currentYear} <span className="font-bold text-slate-800 dark:text-slate-200">SC Academy</span>.{" "}
+            © {currentYear} <span className="font-bold text-slate-800 dark:text-slate-200">{isKhmer ? (settings.site_name_km || "SC Academy") : (settings.site_name_en || "SC Academy")}</span>.{" "}
             {tr("footer.allRightsReserved", "All Rights Reserved.", "រក្សាសិទ្ធិគ្រប់យ៉ាង។")}
           </p>
 

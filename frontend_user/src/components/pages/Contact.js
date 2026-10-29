@@ -1,41 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
-
-import {
-  FiMapPin,
-  FiPhone,
-  FiMail,
-  FiSend,
-  FiCheckCircle,
-  FiUser,
-  FiMessageSquare,
-  FiArrowRight,
-  FiExternalLink,
-} from "react-icons/fi";
-import {
-  FaFacebookF,
-  FaYoutube,
-  FaTelegramPlane,
-  FaInstagram,
-} from "react-icons/fa";
 
 import api from "../../services/api";
 import { useLanguage } from "../../context/LanguageContext";
+import { useSettings } from "../../context/SettingsContext";
+import TypewriterText from "../common/TypewriterText";
 import heroVideo from "./video/sc-academy.mp4";
 
 const Contact = () => {
 
   // =====================================================
-  // LANGUAGE
+  // LANGUAGE & SETTINGS
   // =====================================================
   const { t, language } = useLanguage();
+  const { settings } = useSettings();
   const isKhmer = language === "km";
 
   // =====================================================
   // SC ACADEMY LOCATION
   // =====================================================
   const GOOGLE_MAP_LINK =
+    settings.google_map_url ||
     "https://maps.app.goo.gl/y19U8vRnrNh8tSvo8";
 
   const GOOGLE_MAP_EMBED =
@@ -118,32 +103,32 @@ const Contact = () => {
   // =====================================================
   const contactInfo = [
     {
-      icon: FiMapPin,
+      iconClass: "fa-solid fa-location-dot",
       label: tr("contact.address", "Address", "អាសយដ្ឋាន"),
-      value: tr(
+      value: (isKhmer ? settings.address_km : settings.address_en) || tr(
         "contact.addressValue",
-        "SC Academy, AP Plaza, Preah Monivong Blvd, Phnom Penh, Cambodia",
-        "SC Academy, អគារ AP Plaza, មហាវិថីព្រះមុនីវង្ស, រាជធានីភ្នំពេញ, កម្ពុជា"
+        "14 Street 349, Phnom Penh, Cambodia",
+        "14 Street 349, រាជធានីភ្នំពេញ, កម្ពុជា"
       ),
       href: GOOGLE_MAP_LINK,
     },
     {
-      icon: FiPhone,
+      iconClass: "fa-solid fa-phone",
       label: tr("contact.phone", "Phone", "លេខទូរស័ព្ទ"),
-      value: "+855 86 306 615",
-      href: "tel:+85586306615",
+      value: settings.phone || "086 306 615",
+      href: `tel:${settings.phone || "086306615"}`,
     },
     {
-      icon: FiMail,
+      iconClass: "fa-solid fa-envelope",
       label: tr("contact.email", "Email", "អ៊ីមែល"),
-      value: "info@scacademy.edu.kh",
-      href: "mailto:info@scacademy.edu.kh",
+      value: settings.email || "scacademy9@gmail.com",
+      href: `mailto:${settings.email || "scacademy9@gmail.com"}`,
     },
     {
-      icon: FiSend,
+      iconClass: "fa-brands fa-telegram",
       label: tr("contact.telegram", "Telegram", "តេឡេក្រាម"),
       value: "@SC_Academy",
-      href: "https://t.me/SC_Academy",
+      href: settings.telegram_url || "https://t.me/SCAcademy01",
     },
   ];
 
@@ -151,10 +136,10 @@ const Contact = () => {
   // SOCIAL MEDIA
   // =====================================================
   const socialLinks = [
-    { icon: FaFacebookF, label: "Facebook", href: "https://facebook.com" },
-    { icon: FaTelegramPlane, label: "Telegram", href: "https://t.me/SC_Academy" },
-    { icon: FaYoutube, label: "YouTube", href: "https://youtube.com" },
-    { icon: FaInstagram, label: "Instagram", href: "https://instagram.com" },
+    { iconClass: "fa-brands fa-facebook-f", label: "Facebook", href: settings.facebook_url || "https://www.facebook.com/sc.academy.117" },
+    { iconClass: "fa-brands fa-telegram", label: "Telegram", href: settings.telegram_url || "https://t.me/SC_Academy" },
+    { iconClass: "fa-brands fa-youtube", label: "YouTube", href: settings.youtube_url || "https://www.youtube.com/@SCAcademy-Cambodia" },
+    { iconClass: "fa-brands fa-instagram", label: "Instagram",  href: "https://www.instagram.com/sc.academy.117/" },
   ];
 
   // =====================================================
@@ -204,13 +189,39 @@ const Contact = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-black/30" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 w-full animate-text-focus">
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-600/30 border border-blue-400/40 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4 backdrop-blur-md shadow-sm">
-              💬 {tr("contact.heroLabel", "Contact Us", "ទំនាក់ទំនងមកយើង")}
+              {tr("contact.heroLabel", "Contact Us", "ទំនាក់ទំនងមកយើង")}
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4 drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]">
-              {tr("contact.heroTitle", "Get In Touch With SC Academy", "ទាក់ទងមកកាន់ SC Academy")}
+              {isKhmer ? (
+                <>
+                  ទំនាក់ទំនងមកកាន់{" "}
+                  <TypewriterText
+                    words={[
+                      "SC Academy",
+                      "ក្រុមការងារប្រឹក្សាយោបល់",
+                      "ផ្នែកចុះឈ្មោះចូលរៀន",
+                      "ការិយាល័យទំនាក់ទំនងសាលា",
+                    ]}
+                    highlightClassName="animated-gradient-text"
+                  />
+                </>
+              ) : (
+                <>
+                  Get In Touch With{" "}
+                  <TypewriterText
+                    words={[
+                      "SC Academy",
+                      "Admissions Team",
+                      "Student Career Advisors",
+                      "Campus Helpdesk",
+                    ]}
+                    highlightClassName="animated-gradient-text"
+                  />
+                </>
+              )}
             </h1>
             <p className="text-sm sm:text-base text-slate-100 leading-relaxed max-w-2xl font-medium drop-shadow-[0_1px_8px_rgba(0,0,0,0.85)]">
               {tr(
@@ -224,16 +235,20 @@ const Contact = () => {
       </section>
 
       {/* =================================================
-          CONTACT SECTION
+          PAGE BODY WITH DOT MATRIX PATTERN
       ================================================= */}
-      <section className="bg-[#F8FAFC] py-12 md:py-16">
+      <div className="relative w-full bg-dot-matrix-page overflow-hidden">
+        {/* =================================================
+            CONTACT SECTION
+        ================================================= */}
+        <section className="bg-transparent py-12 md:py-16 scroll-reveal">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8 lg:gap-10 items-start">
             
             {/* =================================================
                 CONTACT FORM
             ================================================= */}
-            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm scroll-reveal-left">
               <div className="border-b border-slate-100 px-6 sm:px-8 py-5">
                 <span className="text-[10px] uppercase tracking-widest font-bold text-[#2563EB]">
                   {tr("contact.sendUsMessage", "Send Us A Message", "ផ្ញើសារមកយើង")}
@@ -246,7 +261,7 @@ const Contact = () => {
               {submitted ? (
                 <div className="p-8 sm:p-12 text-center">
                   <div className="w-14 h-14 mx-auto mb-4 bg-blue-50 text-[#2563EB] rounded-2xl flex items-center justify-center">
-                    <FiCheckCircle size={28} />
+                    <i className="fa-solid fa-circle-check text-2xl" />
                   </div>
                   <h3 className="text-xl font-bold text-slate-900">
                     {tr("contact.messageSent", "Message Sent Successfully!", "សារត្រូវបានផ្ញើ!")}
@@ -264,7 +279,7 @@ const Contact = () => {
                     className="mt-6 h-11 px-6 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl inline-flex items-center justify-center text-xs font-bold transition shadow-sm active:scale-95"
                   >
                     {tr("contact.sendAnother", "Send Another Message", "ផ្ញើសារមួយទៀត")}
-                    <FiArrowRight size={14} className="ml-2" />
+                    <i className="fa-solid fa-arrow-right ml-2" />
                   </button>
                 </div>
               ) : (
@@ -292,62 +307,46 @@ const Contact = () => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     {/* NAME */}
                     <div>
-                      <label htmlFor="name" className="block text-xs font-bold text-slate-700 mb-1.5">
+                      <label htmlFor="name" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                         {tr("contact.fullName", "Full Name", "ឈ្មោះពេញ")} <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
-                        <FiUser size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                        <i className="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
                         <input
                           id="name" type="text" name="name" value={formData.name} onChange={handleChange}
                           placeholder={tr("contact.namePlaceholder", "Your full name", "បញ្ចូលឈ្មោះពេញរបស់អ្នក")}
                           required disabled={loading}
-                          className="w-full h-11 pl-10 pr-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 outline-none focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/10 transition"
+                          className="w-full h-11 pl-10 pr-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:bg-white dark:focus:bg-slate-900 focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/10 transition"
                         />
                       </div>
                     </div>
 
                     {/* EMAIL */}
                     <div>
-                      <label htmlFor="email" className="block text-xs font-bold text-slate-700 mb-1.5">
+                      <label htmlFor="email" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                         {tr("contact.emailAddress", "Email Address", "អាសយដ្ឋានអ៊ីមែល")} <span className="text-red-500">*</span>
                       </label>
                       <div className="relative">
-                        <FiMail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                        <i className="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
                         <input
                           id="email" type="email" name="email" value={formData.email} onChange={handleChange}
                           placeholder="example@email.com" required disabled={loading}
-                          className="w-full h-11 pl-10 pr-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 outline-none focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/10 transition"
+                          className="w-full h-11 pl-10 pr-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:bg-white dark:focus:bg-slate-900 focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/10 transition"
                         />
                       </div>
                     </div>
 
                     {/* PHONE */}
-                    <div>
-                      <label htmlFor="phone" className="block text-xs font-bold text-slate-700 mb-1.5">
+                    <div className="sm:col-span-2">
+                      <label htmlFor="phone" className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
                         {tr("contact.phoneNumber", "Phone Number", "លេខទូរស័ព្ទ")}
                       </label>
                       <div className="relative">
-                        <FiPhone size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                        <i className="fa-solid fa-phone absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs" />
                         <input
                           id="phone" type="tel" name="phone" value={formData.phone} onChange={handleChange}
                           placeholder="+855 XX XXX XXX" disabled={loading}
-                          className="w-full h-11 pl-10 pr-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 outline-none focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/10 transition"
-                        />
-                      </div>
-                    </div>
-
-                    {/* SUBJECT */}
-                    <div>
-                      <label htmlFor="subject" className="block text-xs font-bold text-slate-700 mb-1.5">
-                        {tr("contact.subject", "Subject", "ប្រធានបទ")}
-                      </label>
-                      <div className="relative">
-                        <FiMessageSquare size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-                        <input
-                          id="subject" type="text" name="subject" value={formData.subject} onChange={handleChange}
-                          placeholder={tr("contact.subjectPlaceholder", "How can we help?", "តើយើងអាចជួយអ្នកអ្វីបានខ្លះ?")}
-                          disabled={loading}
-                          className="w-full h-11 pl-10 pr-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder:text-slate-400 outline-none focus:bg-white focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/10 transition"
+                          className="w-full h-11 pl-10 pr-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:bg-white dark:focus:bg-slate-900 focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/10 transition"
                         />
                       </div>
                     </div>
@@ -381,7 +380,7 @@ const Contact = () => {
                     ) : (
                       <>
                         {tr("contact.sendMessage", "Send Message", "ផ្ញើសារ")}
-                        <FiSend size={13} className="ml-2" />
+                        <i className="fa-solid fa-paper-plane ml-2 text-xs" />
                       </>
                     )}
                   </button>
@@ -392,7 +391,7 @@ const Contact = () => {
             {/* =================================================
                 CONTACT INFORMATION & CARDS
             ================================================= */}
-            <div className="space-y-6">
+            <div className="space-y-6 scroll-reveal-right">
               <div>
                 <span className="text-xs uppercase tracking-widest font-bold text-[#2563EB]">
                   {tr("contact.contactInformation", "DIRECT CHANNELS", "ព័ត៌មានទំនាក់ទំនង")}
@@ -412,7 +411,6 @@ const Contact = () => {
               {/* CONTACT CARDS */}
               <div className="space-y-3">
                 {contactInfo.map((info, index) => {
-                  const Icon = info.icon;
                   return (
                     <a
                       key={index}
@@ -422,13 +420,13 @@ const Contact = () => {
                       className="card-lift group flex items-start gap-3.5 bg-white border border-slate-200 rounded-2xl p-4 shadow-sm hover:border-slate-300 transition-all duration-200"
                     >
                       <div className="w-10 h-10 min-w-[40px] bg-blue-50 text-[#2563EB] rounded-xl flex items-center justify-center group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-200">
-                        <Icon size={16} />
+                        <i className={`${info.iconClass} text-sm`} />
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{info.label}</p>
                         <p className="text-xs sm:text-sm text-slate-900 font-semibold mt-0.5 break-words group-hover:text-[#2563EB] transition-colors">{info.value}</p>
                       </div>
-                      <FiExternalLink size={13} className="text-slate-400 group-hover:text-[#2563EB] mt-1 shrink-0 transition" />
+                      <i className="fa-solid fa-arrow-up-right-from-square text-xs text-slate-400 group-hover:text-[#2563EB] mt-1 shrink-0 transition" />
                     </a>
                   );
                 })}
@@ -447,7 +445,6 @@ const Contact = () => {
                   </div>
                   <div className="flex gap-2">
                     {socialLinks.map((social, index) => {
-                      const Icon = social.icon;
                       return (
                         <a
                           key={index}
@@ -457,7 +454,7 @@ const Contact = () => {
                           rel="noopener noreferrer"
                           className="w-9 h-9 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center text-slate-600 hover:bg-[#2563EB] hover:text-white hover:border-[#2563EB] transition"
                         >
-                          <Icon size={14} />
+                          <i className={`${social.iconClass} text-sm`} />
                         </a>
                       );
                     })}
@@ -472,26 +469,26 @@ const Contact = () => {
       {/* =================================================
           LOCATION
       ================================================= */}
-      <section className="bg-white py-12 md:py-16 border-t border-slate-200">
+      <section className="bg-transparent py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10 md:mb-12">
             <span className="text-[#2563EB] text-xs font-bold uppercase tracking-widest">
               {tr("contact.visitCampus", "Visit Our Campus", "មកទស្សនាសាលារបស់យើង")}
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mt-1.5">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mt-1.5">
               {tr("contact.findAcademy", "Find SC Academy in Phnom Penh", "ស្វែងរកទីតាំង SC Academy")}
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mt-2">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed mt-2">
               {tr(
                 "contact.locationDescription",
-                "Visit SC Academy at AP Plaza on Preah Monivong Blvd in Phnom Penh.",
-                "មកទស្សនា SC Academy នៅអគារ AP Plaza លើមហាវិថីព្រះមុនីវង្ស រាជធានីភ្នំពេញ។"
+                "Visit SC Academy at 14 Street 349 in Phnom Penh.",
+                "មកទស្សនា SC Academy នៅ 14 Street 349 រាជធានីភ្នំពេញ។"
               )}
             </p>
           </div>
 
           {/* MAP CONTAINER */}
-          <div className="relative h-[380px] md:h-[450px] bg-slate-100 border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
+          <div className="relative h-[380px] md:h-[450px] bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden shadow-sm">
             <iframe
               title="SC Academy Location"
               src={GOOGLE_MAP_EMBED}
@@ -505,31 +502,31 @@ const Contact = () => {
                 href={GOOGLE_MAP_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="h-11 px-6 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl shadow-md inline-flex items-center justify-center text-xs font-bold whitespace-nowrap transition-all duration-300 active:scale-95"
+                className="h-11 px-6 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl shadow-md inline-flex items-center justify-center text-xs font-bold whitespace-nowrap transition-all duration-300 active:scale-95 gap-2"
               >
-                <FiMapPin size={14} className="mr-2" />
+                <i className="fa-solid fa-location-dot text-sm" />
                 {tr("contact.openGoogleMaps", "Open in Google Maps", "បើកក្នុង Google Maps")}
-                <FiExternalLink size={13} className="ml-2" />
+                <i className="fa-solid fa-arrow-up-right-from-square text-xs" />
               </a>
             </div>
           </div>
 
           {/* LOCATION INFO CARD */}
-          <div className="mt-6 bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="mt-6 bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 rounded-2xl p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4 shadow-sm">
             <div className="flex items-start gap-3.5">
-              <div className="w-10 h-10 min-w-[40px] bg-blue-100 text-[#2563EB] rounded-xl flex items-center justify-center">
-                <FiMapPin size={18} />
+              <div className="w-10 h-10 min-w-[40px] bg-blue-100 dark:bg-blue-900/40 text-[#2563EB] dark:text-blue-400 rounded-xl flex items-center justify-center">
+                <i className="fa-solid fa-location-dot text-base text-[#2563EB]" />
               </div>
               <div>
                 <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
                   {tr("contact.ourCampus", "Head Office", "សាលារបស់យើង")}
                 </span>
-                <h3 className="text-sm font-bold text-slate-900 mt-0.5">SC Academy Official Campus</h3>
-                <p className="text-xs text-slate-600 leading-relaxed mt-0.5">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white mt-0.5">SC Academy Official Campus</h3>
+                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mt-0.5">
                   {tr(
                     "contact.addressValue",
-                    "SC Academy, AP Plaza, Preah Monivong Blvd, Phnom Penh, Cambodia",
-                    "SC Academy, អគារ AP Plaza, មហាវិថីព្រះមុនីវង្ស, រាជធានីភ្នំពេញ, កម្ពុជា"
+                    "14 Street 349, Phnom Penh, Cambodia",
+                    "14 Street 349, រាជធានីភ្នំពេញ, កម្ពុជា"
                   )}
                 </p>
               </div>
@@ -538,54 +535,16 @@ const Contact = () => {
               href={GOOGLE_MAP_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              className="h-10 px-5 bg-white border border-slate-200 hover:bg-slate-100 text-slate-800 rounded-xl inline-flex items-center justify-center text-xs font-bold whitespace-nowrap transition-all duration-200 shadow-sm shrink-0"
+              className="h-10 px-5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-800 dark:text-white rounded-xl inline-flex items-center justify-center text-xs font-bold whitespace-nowrap transition-all duration-200 shadow-sm shrink-0 gap-2"
             >
               {tr("contact.getDirections", "Get Directions", "មើលផ្លូវទៅកាន់ទីតាំង")}
-              <FiArrowRight size={13} className="ml-2 text-[#2563EB]" />
+              <i className="fa-solid fa-arrow-right text-xs text-[#2563EB]" />
             </a>
           </div>
         </div>
       </section>
+      </div>
 
-      {/* =================================================
-          BOTTOM CTA
-      ================================================= */}
-      <section className="bg-[#F8FAFC] py-14 md:py-20 border-t border-slate-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-slate-950 rounded-3xl border border-slate-800 p-8 md:p-14 text-center text-white shadow-xl">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[#2563EB] text-xs font-bold uppercase tracking-wider">
-              {tr("contact.startJourney", "Start Your Tech Journey", "ចាប់ផ្តើមដំណើររបស់អ្នក")}
-            </span>
-            <h2 className="mt-5 text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              {tr("contact.readyToJoin", "Ready to Join SC Academy?", "ត្រៀមខ្លួនចូលរួមជាមួយ SC Academy?")}
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-xl mx-auto mt-3">
-              {tr(
-                "contact.ctaDescription",
-                "Contact our team today to learn more about enrollment, programs and educational opportunities available at SC Academy.",
-                "ទាក់ទងក្រុមការងាររបស់យើងថ្ងៃនេះ ដើម្បីស្វែងយល់បន្ថែមអំពីការចុះឈ្មោះ កម្មវិធី និងឱកាសអប់រំដែលមាននៅ SC Academy។"
-              )}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
-              <a
-                href="https://t.me/SC_Academy"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto h-12 px-8 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl text-xs sm:text-sm font-bold inline-flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95"
-              >
-                <FaTelegramPlane size={15} />
-                <span>{tr("contact.chatTelegram", "Chat on Telegram", "ជជែកតាមតេឡេក្រាម")}</span>
-              </a>
-              <Link
-                to="/courses"
-                className="w-full sm:w-auto h-12 px-8 bg-slate-900 border border-slate-700 hover:bg-slate-800 text-white rounded-xl text-xs sm:text-sm font-bold inline-flex items-center justify-center transition-all"
-              >
-                {tr("courses.viewAll", "Explore All Programs", "មើលវគ្គសិក្សាទាំងអស់")}
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
     </main>
   );
 };

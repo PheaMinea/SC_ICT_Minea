@@ -47,6 +47,16 @@ class Admin(Base):
         index=True,
     )
 
+    full_name = Column(
+        String(150),
+        nullable=True,
+    )
+
+    avatar_url = Column(
+        String(500),
+        nullable=True,
+    )
+
     hashed_password = Column(
         String(255),
         nullable=False,
@@ -386,8 +396,10 @@ class Enrollment(Base):
     # COURSE
     # ========================================================
 
+    from sqlalchemy.dialects.mysql import INTEGER as MySQLInteger
+
     course_id = Column(
-        Integer,
+        MySQLInteger(unsigned=True),
         ForeignKey("courses.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
@@ -1431,7 +1443,7 @@ class SiteSettings(Base):
 
 
 # ============================================================
-# 13. REVOKED TOKENS (JWT BLACKLIST)
+# 14. REVOKED TOKENS (JWT BLACKLIST)
 # ============================================================
 
 class RevokedToken(Base):

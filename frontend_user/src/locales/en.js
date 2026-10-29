@@ -64,7 +64,7 @@ const en = {
     email: "Email",
     telegram: "Telegram",
 
-    addressLine1: "#123, Street 456",
+    addressLine1: "14 Street 349, Phnom Penh",
     addressLine2: "Phnom Penh, Cambodia",
 
     allRightsReserved: "All Rights Reserved.",
@@ -354,7 +354,7 @@ const en = {
     free: "Free",
     heroLabel: "SC Academy Programs",
     heroTitle: "Learn Today. Build Your Future.",
-    heroDescription: "Choose the right program for your goals and develop the knowledge and practical skills you need for your future.",
+    heroDescription: "At SC Academy, we offer practical technology and digital skills training designed to meet the needs of today’s learners and workforce. Our courses focus on hands-on learning, relevant skills, and real-world applications to help learners prepare for their careers.",
     sectionTitle: "Our Programs",
     sectionLabel: "Explore Our Programs",
     sectionHeading: "Popular Programs",

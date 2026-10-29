@@ -52,8 +52,33 @@ const getTranslation = (source, key) => {
 
 
 // ==========================================
-// LANGUAGE PROVIDER
+// BACKEND LANGUAGE API HELPERS
 // ==========================================
+
+const BACKEND_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000";
+
+const fetchLanguageFromBackend = async () => {
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/language/`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data?.language || null;
+  } catch {
+    return null;
+  }
+};
+
+const pushLanguageToBackend = async (lang) => {
+  try {
+    await fetch(`${BACKEND_URL}/api/language/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ language: lang }),
+    });
+  } catch {
+    // ignore network error
+  }
+};
 
 export const LanguageProvider = ({
   children,
@@ -63,86 +88,67 @@ export const LanguageProvider = ({
   // LANGUAGE STATE
   // ========================================
 
-  const [language, setLanguage] =
-    useState(() => {
-
-      const savedLanguage =
-        localStorage.getItem("language");
-
-      if (
-        savedLanguage === "en" ||
-        savedLanguage === "km"
-      ) {
-        return savedLanguage;
-      }
-
-      return "en";
-    });
-
+  const [language, setLanguage] = useState(() => {
+    const savedLanguage = localStorage.getItem("language") || localStorage.getItem("admin_language");
+    if (savedLanguage === "en" || savedLanguage === "km") {
+      return savedLanguage;
+    }
+    return "km"; // default Khmer
+  });
 
   // ========================================
-  // SAVE LANGUAGE
+  // SAVE LANGUAGE LOCALLY
   // ========================================
 
   useEffect(() => {
-
-    localStorage.setItem(
-      "language",
-      language
-    );
-
+    localStorage.setItem("language", language);
+    localStorage.setItem("admin_language", language);
 
     // HTML language
-    document.documentElement.lang =
-      language === "km"
-        ? "km"
-        : "en";
+    document.documentElement.lang = language === "km" ? "km" : "en";
 
-
-    // Optional class for Khmer font
+    // Font class
     if (language === "km") {
-
-      document.documentElement.classList.add(
-        "lang-km"
-      );
-
-      document.documentElement.classList.remove(
-        "lang-en"
-      );
-
+      document.documentElement.classList.add("lang-km");
+      document.documentElement.classList.remove("lang-en");
     } else {
-
-      document.documentElement.classList.add(
-        "lang-en"
-      );
-
-      document.documentElement.classList.remove(
-        "lang-km"
-      );
-
+      document.documentElement.classList.add("lang-en");
+      document.documentElement.classList.remove("lang-km");
     }
-
   }, [language]);
 
+  // ========================================
+  // BACKEND POLLING — sync every 2 seconds
+  // ========================================
+
+  useEffect(() => {
+    const poll = async () => {
+      const backendLang = await fetchLanguageFromBackend();
+      if ((backendLang === "en" || backendLang === "km") && backendLang !== language) {
+        setLanguage(backendLang);
+        localStorage.setItem("language", backendLang);
+        localStorage.setItem("admin_language", backendLang);
+      }
+    };
+
+    const interval = setInterval(poll, 2000);
+    return () => clearInterval(interval);
+  }, [language]);
 
   // ========================================
   // CHANGE LANGUAGE
   // ========================================
 
   const changeLanguage = (lang) => {
-
-    if (
-      lang !== "en" &&
-      lang !== "km"
-    ) {
-      console.warn(
-        `Unsupported language: ${lang}`
-      );
-
+    if (lang !== "en" && lang !== "km") {
+      console.warn(`Unsupported language: ${lang}`);
       return;
     }
 
     setLanguage(lang);
+    localStorage.setItem("language", lang);
+    localStorage.setItem("admin_language", lang);
+    pushLanguageToBackend(lang);
   };
 
 

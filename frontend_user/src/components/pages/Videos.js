@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
-import { FiVideo, FiArrowRight } from "react-icons/fi";
-
+import { FiVideo } from "react-icons/fi";
 import api from "../../services/api";
-import Loader from "../common/Loader";
+import TypewriterText from "../common/TypewriterText";
+import EmptyState from "../common/EmptyState";
 import { useLanguage } from "../../context/LanguageContext";
 import heroVideo from "./video/sc-academy.mp4";
 
@@ -207,13 +206,39 @@ const Videos = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-black/30" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 w-full animate-text-focus">
           <div className="max-w-3xl">
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-600/30 border border-blue-400/40 text-blue-300 text-xs font-bold uppercase tracking-wider mb-4 backdrop-blur-md shadow-sm">
-              🎬 {tr("videos.heroLabel", "VIDEO PLAYLIST", "បញ្ជីវីដេអូ")}
+              {tr("videos.heroLabel", "VIDEO PLAYLIST", "បញ្ជីវីដេអូ")}
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4 drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]">
-              {tr("videos.heroTitle", "Discover Life & Learning at SC Academy", "ស្វែងយល់ពីជីវិតនៅ SC Academy")}
+              {isKhmer ? (
+                <>
+                  ទស្សនា & ស្វែងយល់{" "}
+                  <TypewriterText
+                    words={[
+                      "ពីជីវិតនៅ SC Academy",
+                      "សកម្មភាពអនុវត្តជាក់ស្ដែង",
+                      "ស្នាដៃ និងគម្រោងរបស់សិស្ស",
+                      "ចំណេះដឹងបច្ចេកវិទ្យាថ្មីៗ",
+                    ]}
+                    highlightClassName="animated-gradient-text"
+                  />
+                </>
+              ) : (
+                <>
+                  Discover Life & Learning at{" "}
+                  <TypewriterText
+                    words={[
+                      "SC Academy",
+                      "Hands-on Lab Highlights",
+                      "Student Final Projects",
+                      "Modern Tech Insights",
+                    ]}
+                    highlightClassName="animated-gradient-text"
+                  />
+                </>
+              )}
             </h1>
             <p className="text-sm sm:text-base text-slate-100 leading-relaxed max-w-2xl font-medium drop-shadow-[0_1px_8px_rgba(0,0,0,0.85)]">
               {tr(
@@ -229,7 +254,7 @@ const Videos = () => {
       {/* =================================================
           VIDEO PLAYLIST
       ================================================= */}
-      <section className="bg-[#F8FAFC] py-12 md:py-16">
+      <section className="bg-dot-matrix-page py-12 md:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* CATEGORY FILTER */}
@@ -257,17 +282,14 @@ const Videos = () => {
 
           {/* EMPTY STATE */}
           {filteredVideos.length === 0 ? (
-            <div className="max-w-md mx-auto bg-white border border-slate-200 rounded-2xl py-12 px-6 text-center shadow-sm">
-              <div className="w-12 h-12 mx-auto mb-3 bg-slate-100 rounded-xl flex items-center justify-center text-slate-400">
-                <FiVideo size={24} />
-              </div>
-              <h3 className="text-base font-bold text-slate-900">
-                {tr("videos.noVideosFound", "No Videos Found", "រកមិនឃើញវីដេអូ")}
-              </h3>
-              <p className="text-xs text-slate-500 mt-1">
-                {tr("videos.noVideosDescription", "No videos are available in this category.", "មិនមានវីដេអូសម្រាប់ប្រភេទនេះទេ។")}
-              </p>
-            </div>
+            <EmptyState
+              icon={FiVideo}
+              title_km="មិនទាន់មានវីដេអូនៅឡើយទេ"
+              title_en="No Videos Available"
+              description_km={activeCategory !== "All" ? "មិនមានវីដេអូសម្រាប់ប្រភេទដែលអ្នកបានជ្រើសរើសឡើយ។" : "វីដេអូសកម្មភាព និងការបង្រៀននឹងបង្ហាញនៅទីនេះបន្ទាប់ពីត្រូវបានបញ្ចូល។"}
+              description_en={activeCategory !== "All" ? "No videos available for this category." : "Educational videos and campus activities will appear here once added."}
+              onReset={activeCategory !== "All" ? () => handleCategoryChange("All") : null}
+            />
           ) : (
             /* VIDEO GRID */
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -278,12 +300,13 @@ const Videos = () => {
                   "title",
                   tr("videos.defaultTitle", "SC Academy Video", "វីដេអូ SC Academy")
                 );
+                const videoDescription = localized(video, "description", "");
                 const videoCategory = localized(video, "category", "");
 
                 return (
                   <article
                     key={video.id || index}
-                    className="card-lift group bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:border-slate-300 transition-all duration-300 flex flex-col"
+                    className={`card-lift bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:border-slate-300 transition-all duration-300 flex flex-col scroll-reveal stagger-${(index % 6) + 1}`}
                   >
                     {/* VIDEO CONTAINER */}
                     <div className="relative w-full aspect-video bg-slate-950 overflow-hidden">
@@ -324,6 +347,11 @@ const Videos = () => {
                       <h3 className="text-sm font-bold text-slate-900 leading-snug line-clamp-2" title={videoTitle}>
                         {videoTitle}
                       </h3>
+                      {videoDescription && (
+                        <p className="text-xs text-slate-500 line-clamp-2 mt-1.5 leading-relaxed">
+                          {videoDescription}
+                        </p>
+                      )}
                       <div className="flex-grow" />
                       <div className="flex items-center justify-between gap-3 border-t border-slate-100 mt-4 pt-3 text-[11px] text-slate-400 font-medium">
                         <span>SC Academy Channel</span>
@@ -338,43 +366,7 @@ const Videos = () => {
         </div>
       </section>
 
-      {/* =================================================
-          CTA
-      ================================================= */}
-      <section className="bg-white py-14 md:py-20 border-t border-slate-200">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-slate-950 rounded-3xl border border-slate-800 p-8 md:p-14 text-center text-white shadow-xl">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-[#2563EB] text-xs font-bold uppercase tracking-wider">
-              ✨ {tr("videos.community", "SC Academy Community", "សហគមន៍ SC Academy")}
-            </span>
-            <h2 className="mt-5 text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight">
-              {tr("videos.learnGrow", "Learn, Grow & Achieve Together", "រៀន រីកចម្រើន និងសម្រេចជោគជ័យជាមួយគ្នា")}
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-xl mx-auto mt-3">
-              {tr(
-                "videos.ctaDescription",
-                "Watch our students learn, grow and create memorable experiences through education, activities and community events at SC Academy.",
-                "ទស្សនាសិស្សរបស់យើងរៀនសូត្រ រីកចម្រើន និងបង្កើតបទពិសោធន៍គួរឱ្យចងចាំតាមរយៈការអប់រំ សកម្មភាព និងព្រឹត្តិការណ៍សហគមន៍នៅ SC Academy។"
-              )}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
-              <Link
-                to="/courses"
-                className="w-full sm:w-auto h-12 px-8 bg-[#2563EB] hover:bg-[#1D4ED8] text-white rounded-xl text-xs sm:text-sm font-bold inline-flex items-center justify-center gap-2 transition-all shadow-sm active:scale-95"
-              >
-                <span>{tr("common.ourCourses", "Explore Programs", "ស្វែងយល់វគ្គសិក្សា")}</span>
-                <FiArrowRight size={14} />
-              </Link>
-              <Link
-                to="/contact"
-                className="w-full sm:w-auto h-12 px-8 bg-slate-900 border border-slate-700 hover:bg-slate-800 text-white rounded-xl text-xs sm:text-sm font-bold inline-flex items-center justify-center transition-all"
-              >
-                {tr("common.contactUs", "Contact Us", "ទាក់ទងមកយើង")}
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+
     </main>
   );
 };

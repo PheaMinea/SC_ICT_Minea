@@ -1,4 +1,4 @@
-// PageLoader.jsx - Clean Circular Ring Spinner on Page Navigation (Transparent Background)
+// PageLoader.jsx - Clean & Lightweight Circular Spinner on Page Navigation
 import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
@@ -8,26 +8,26 @@ const PageLoader = () => {
   const [isFading, setIsFading] = useState(false);
   const timerRef = useRef(null);
   const fadeTimerRef = useRef(null);
-  const firstRun = useRef(true);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
-    // Skip initial page load (Home has its own Loader)
-    if (firstRun.current) {
-      firstRun.current = false;
+    // Skip initial page load (Home has its own initial loader)
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
       return;
     }
 
     setLoading(true);
     setIsFading(false);
 
-    // Steady duration (~700ms) with gentle fade-out
+    // Fast, responsive loading duration (450ms)
     timerRef.current = setTimeout(() => {
       setIsFading(true);
       fadeTimerRef.current = setTimeout(() => {
         setLoading(false);
         setIsFading(false);
       }, 200);
-    }, 700);
+    }, 450);
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
@@ -39,20 +39,23 @@ const PageLoader = () => {
 
   return (
     <div
-      className={`pointer-events-none fixed inset-0 z-[99999] flex items-center justify-center bg-transparent transition-opacity duration-200 ${
+      className={`fixed inset-0 z-[99999] pointer-events-none flex items-center justify-center bg-transparent transition-opacity duration-200 ${
         isFading ? "opacity-0" : "opacity-100"
       }`}
       aria-hidden="true"
     >
-      {/* Centered Circular Ring Spinner (រង្វង់មូល - 100% Transparent Background) */}
-      <div className="relative w-12 h-12 flex items-center justify-center filter drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]">
-        {/* Background Circle Track */}
-        <div className="w-12 h-12 rounded-full border-[3.5px] border-white/40 dark:border-slate-700/60" />
-        {/* Animated Royal Blue Spinning Ring */}
-        <div className="absolute inset-0 w-12 h-12 rounded-full border-[3.5px] border-transparent border-t-[#2563EB] border-r-[#2563EB] animate-spin" />
+      {/* Pure Floating Ring Spinner (100% Transparent, No Background) */}
+      <div className="relative w-11 h-11 flex items-center justify-center drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]">
+        {/* Background Track Ring */}
+        <div className="w-11 h-11 rounded-full border-[3px] border-slate-300/60 dark:border-slate-600/60" />
+        {/* Animated Royal Blue Spinner */}
+        <div className="absolute inset-0 w-11 h-11 rounded-full border-[3px] border-transparent border-t-[#2563EB] border-r-[#2563EB] animate-spin" />
       </div>
     </div>
   );
 };
 
 export default PageLoader;
+
+
+

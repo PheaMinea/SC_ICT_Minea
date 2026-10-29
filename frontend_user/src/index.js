@@ -6,6 +6,7 @@ import './styles/index.css';
 import App from './App';
 import { LanguageProvider } from './context/LanguageContext';
 import { ThemeProvider } from './context/ThemeContext';
+import { SettingsProvider } from './context/SettingsContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -15,7 +16,9 @@ root.render(
       <BrowserRouter>
         <ThemeProvider>
           <LanguageProvider>
-            <App />
+            <SettingsProvider>
+              <App />
+            </SettingsProvider>
           </LanguageProvider>
         </ThemeProvider>
       </BrowserRouter>

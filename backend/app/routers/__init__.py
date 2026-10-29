@@ -9,6 +9,7 @@ from . import courses
 from . import testimonials
 from . import schools
 from . import alumni
+from . import language
 
 __all__ = [
     "auth",
@@ -22,4 +23,5 @@ __all__ = [
     "testimonials",
     "schools",
     "alumni",
+    "language",
 ]
