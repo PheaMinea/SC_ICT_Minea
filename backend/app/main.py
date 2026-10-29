@@ -216,9 +216,19 @@ ALLOWED_ORIGINS = settings.allowed_origins or (
     PRODUCTION_ORIGINS if IS_PRODUCTION else DEVELOPMENT_ORIGINS
 )
 
+TRUSTED_HOSTS = settings.allowed_hosts.copy()
+for variable in (
+    "VERCEL_URL",
+    "VERCEL_BRANCH_URL",
+    "VERCEL_PROJECT_PRODUCTION_URL",
+):
+    host = os.getenv(variable)
+    if host and host not in TRUSTED_HOSTS:
+        TRUSTED_HOSTS.append(host)
+
 app.add_middleware(
     TrustedHostMiddleware,
-    allowed_hosts=settings.allowed_hosts,
+    allowed_hosts=TRUSTED_HOSTS,
 )
 
 if IS_PRODUCTION and settings.FORCE_HTTPS:
