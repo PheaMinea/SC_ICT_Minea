@@ -1,3 +1,5 @@
+from urllib.parse import urlsplit
+
 from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -71,6 +73,16 @@ class Settings(BaseSettings):
         if not 5 <= self.ACCESS_TOKEN_EXPIRE_MINUTES <= 1440:
             raise ValueError("ACCESS_TOKEN_EXPIRE_MINUTES must be between 5 and 1440")
         if self.ENVIRONMENT.lower() == "production":
+            database_host = urlsplit(self.DATABASE_URL).hostname
+            if not database_host or database_host.lower() in {
+                "localhost",
+                "127.0.0.1",
+                "::1",
+            }:
+                raise ValueError(
+                    "Production DATABASE_URL must use a reachable cloud database host, "
+                    "not localhost"
+                )
             if len(self.SECRET_KEY) < 32:
                 raise ValueError("SECRET_KEY must contain at least 32 characters in production")
             if not self.allowed_hosts or "*" in self.allowed_hosts:

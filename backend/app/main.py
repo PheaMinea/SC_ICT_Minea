@@ -51,31 +51,6 @@ IS_PRODUCTION = ENVIRONMENT == "production"
 
 
 # ============================================================
-# CREATE DATABASE TABLES
-# ============================================================
-#
-# IMPORTANT:
-#
-# MySQL database must already exist.
-#
-# Base.metadata.create_all() only creates missing tables.
-# It does NOT:
-#
-# - rename columns
-# - delete columns
-# - change existing column types
-# - automatically migrate old tables
-#
-# For production database changes, use Alembic.
-#
-# ============================================================
-
-Base.metadata.create_all(
-    bind=engine
-)
-
-
-# ============================================================
 # REVOKED TOKEN CLEANUP
 # ============================================================
 #
@@ -117,6 +92,10 @@ def cleanup_expired_revoked_tokens() -> int:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Create missing tables after the application starts, not while Vercel imports it.
+    # Existing schemas still require migrations for structural changes.
+    Base.metadata.create_all(bind=engine)
+
     # ---------------------------------------------------
     # STARTUP: clean up expired revoked tokens
     # ---------------------------------------------------
